@@ -20,7 +20,7 @@ namespace Feanwork
 		mPlayerPtr		  = NULL;
 
 		mInterfaceManager->initialize(this);
-		EventManager::getSingleton()->loadMapping("custom.keymap");
+		EventManager::getSingleton()->loadMapping(mResourceDir + "custom.keymap");
 	}
 
 	Game::~Game(void)
@@ -32,12 +32,12 @@ namespace Feanwork
 
 	void Game::expandResources(string _resources)
 	{
-		ResourceManager::getSingleton()->expandBatch(_resources, "sprites.batch");
+		ResourceManager::getSingleton()->expandBatch(mResourceDir + _resources, "sprites.batch");
 	}
 
 	void Game::loadResources(string _dir)
 	{
-		ResourceManager::getSingleton()->loadBatch(_dir, "sprites.batch");
+		ResourceManager::getSingleton()->loadBatch(mResourceDir + _dir, "sprites.batch");
 	}
 
 	void Game::initMenu(OBJECTS _objects)
@@ -62,7 +62,7 @@ namespace Feanwork
 		if(mMusic.Playing)
 			mMusic.stop();
 
-		if(!mMusic.openFromFile(_file))
+		if(!mMusic.openFromFile(mResourceDir + _file))
 			std::cout << "could not locate " << _file << "\n";
 
 		mMusic.setLoop(true);
@@ -72,12 +72,12 @@ namespace Feanwork
 	void Game::pushSound(std::string _soundFile)
 	{
 		if(mSoundQueue)
-			mSoundQueue->pushSound(_soundFile);
+			mSoundQueue->pushSound(mResourceDir + _soundFile);
 	}
 
 	void Game::loadUIContent(string _batch)
 	{
-		mInterfaceManager->loadContent(_batch);
+		mInterfaceManager->loadContent(mResourceDir + _batch);
 	}
 
 	void Game::addUICallback(std::string _name, UICallback _callback)

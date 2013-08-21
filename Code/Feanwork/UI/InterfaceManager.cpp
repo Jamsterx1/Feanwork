@@ -186,8 +186,8 @@ namespace Feanwork
 				newBlock->push(newText);
 			}
 		}
-		mBlocks.push_back(*newBlock);
 
+		mBlocks.push_back(*newBlock);
 		return true;
 	}
 
