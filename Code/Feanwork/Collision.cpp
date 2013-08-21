@@ -21,9 +21,9 @@ namespace Feanwork
 
 		if((adx < sw) && (ady < sh))
 		{
-			float invDist = 1.0f / sqrt(dx * dx + dy * dy);
+			float invDist = 1.0f / (float)sqrt(dx * dx + dy * dy);
 			normal = getNormal(sf::Vector2f(dx * invDist, dy * invDist));
-			depth  = sf::Vector2f(abs(adx - sw), abs(ady - sh));
+			depth  = sf::Vector2f((float)abs(adx - sw), (float)abs(ady - sh));
 
 			_first->collisionCallback(depth, normal);
 			_second->collisionCallback(depth, normal);
