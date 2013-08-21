@@ -8,11 +8,11 @@
 
 namespace Feanwork
 {
-	void ResourceManager::expandBatch(std::string _dir, std::string _batchFile)
+	void ResourceManager::expandBatch(std::string _globalDir, std::string _dir, std::string _batchFile)
 	{
 		if(_dir != "")
 		{
-			std::string path = _dir;
+			std::string path = _globalDir + _dir;
 			if((path.back() != '\\') && (path.back() != '/'))
 				path += "/*.png";
 			else
@@ -32,8 +32,8 @@ namespace Feanwork
 			while(FindNextFile(searchHandle, &info));
 			FindClose(searchHandle);
 
-			std::ofstream oStream(_batchFile, std::fstream::app);
-			std::ifstream iStream(_batchFile);
+			std::ofstream oStream(_globalDir + _batchFile, std::fstream::app);
+			std::ifstream iStream(_globalDir + _batchFile);
 			if(!oStream.is_open() || !iStream.is_open())
 			{
 				std::cout << "Could not locate batch file\n";
@@ -60,7 +60,7 @@ namespace Feanwork
 				std::stringstream sStream;
 				sStream << added.size();
 
-				texture  = _dir + "/" + stringList[i];
+				texture  = _dir + stringList[i];
 				newLine  = "#Resource ";
 				newLine += sStream.str();
 				newLine += ", "; 

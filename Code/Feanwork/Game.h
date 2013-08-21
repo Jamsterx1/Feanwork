@@ -18,13 +18,14 @@ using namespace std;
 
 namespace Feanwork
 {
-	enum    GAMESTATE { MENU, GAME };
+	enum    GAMESTATE   { MENU, GAME		  };
+	enum	WINDOWSTYLE { FULLSCREEN, DEFAULT };
 	#define OBJECTS   std::vector<Object*>
 
 	class Game
 	{
 	public:
-		Game(string _title, string _resourceDir, int _width, int _height, bool _fullscreen);
+		Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen);
 		~Game(void);
 
 		void expandResources(string _resources);
@@ -45,16 +46,17 @@ namespace Feanwork
 		void render();
 		void clean();
 
-		int				  getWidth()		{ return mWidth;	  }
-		int				  getHeight()		{ return mHeight;	  }
-		string			  getTitle()		{ return mTitle;	  }
-		bool			  isFullscreen()	{ return mFullscreen; }
-		sf::RenderWindow* getWindow()		{ return &mWindow;	  }
+		int				  getWidth()		  { return mWidth;		}
+		int				  getHeight()		  { return mHeight;		}
+		string			  getTitle()		  { return mTitle;		}
+		sf::RenderWindow* getWindow()		  { return &mWindow;	}
 		sf::Texture*	  getTexture(int _resourceID);
+		bool			  isInterfaceActive() { return mInterfaceManager->isActive(); }
 
-		void setTitle(string _title)	{ mTitle = _title;	   }
-		void setState(GAMESTATE _state) { mGameState = _state; }
-		void exit()						{ mRunning = false;	   }
+		void   setTitle(string _title)	  { mTitle = _title;	  }
+		string getResourceDir()			  { return mResourceDir;  }
+		void   setState(GAMESTATE _state) { mGameState = _state;  }
+		void   exit()					  { mRunning = false;	  }
 
 		void resume()					{ mPaused = false;	   }
 		void pause()					{ mPaused = true;	   }
@@ -69,7 +71,6 @@ namespace Feanwork
 		int		mHeight;
 		string	mTitle;
 		string  mResourceDir;
-		bool	mFullscreen;
 		bool	mRunning;
 		bool	mPaused;
 

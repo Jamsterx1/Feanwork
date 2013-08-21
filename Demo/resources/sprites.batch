@@ -1,2 +1,6 @@
-#Resource 0, test/test.png
-#Resource 1, test/bullet.png
+#Resource 0, test/bullet.png
+#Resource 1, test/test.png
+
+#Resource 2, ui/button1.png
+#Resource 3, ui/button2.png
+#Resource 4, ui/button3.png

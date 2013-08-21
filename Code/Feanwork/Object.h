@@ -25,6 +25,9 @@ namespace Feanwork
 		std::vector<Object*>& getIgnores() { return collisionIgnore;			 }
 		void ignore(Object* _object)	   { collisionIgnore.push_back(_object); }
 
+		void		setUniqueType(std::string _type) { mUniqueType = _type; }
+		std::string getUniqueType()					 { return mUniqueType;  }
+
 		bool isDestroyed() { return mDestroy; }
 		void destroy()	   { mDestroy = true; }
 
@@ -33,6 +36,8 @@ namespace Feanwork
 		float	    mY;
 		bool	    mCanCollide;
 		bool		mDestroy;
+
+		std::string mUniqueType;
 		sf::Sprite  mSprite;
 		sf::IntRect mAABB;
 		std::vector<Object*> collisionIgnore;

@@ -55,6 +55,8 @@ namespace Feanwork
 		void	   addCallback(std::string _name, UICallback _callback);
 		UICallback getCallback(std::string _callback);
 
+		bool isActive() { return mActive; }
+
 		InterfaceManager() {}
 		~InterfaceManager() {}
 
@@ -63,6 +65,7 @@ namespace Feanwork
 		std::map<std::string, UICallback> mCallbacks;
 		Game*							  mGamePtr;
 		sf::Font						  mDefaultFont;
+		bool							  mActive;
 	};
 }
 

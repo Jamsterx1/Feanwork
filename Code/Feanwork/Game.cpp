@@ -2,20 +2,29 @@
 
 namespace Feanwork
 {
-	Game::Game(string _title, string _resourceDir, int _width, int _height, bool _fullscreen)
+	Game::Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen)
 	{
 		mWidth		 = _width;
 		mHeight		 = _height;
 		mTitle		 = _title;
 		mResourceDir = _resourceDir;
-		mFullscreen	 = _fullscreen;
 		mRunning	 = true;
+
+		unsigned style;
+		if(_screen == FULLSCREEN)
+		{
+			style   = sf::Style::Fullscreen;
+			mWidth  = sf::VideoMode::getDesktopMode().width;
+			mHeight = sf::VideoMode::getDesktopMode().height;
+		}
+		else
+			style = sf::Style::Titlebar | sf::Style::Close;
 
 		mGameState		  = MENU;
 		mCollision		  = new Collision;
 		mInterfaceManager = new InterfaceManager;
 		mSoundQueue		  = new SoundQueue;
-		mWindow.create(sf::VideoMode(mWidth, mHeight), mTitle);
+		mWindow.create(sf::VideoMode(mWidth, mHeight), mTitle, style);
 		mWindow.setFramerateLimit(60);
 		mPlayerPtr		  = NULL;
 
@@ -32,7 +41,7 @@ namespace Feanwork
 
 	void Game::expandResources(string _resources)
 	{
-		ResourceManager::getSingleton()->expandBatch(mResourceDir + _resources, "sprites.batch");
+		ResourceManager::getSingleton()->expandBatch(mResourceDir, _resources, "sprites.batch");
 	}
 
 	void Game::loadResources(string _dir)

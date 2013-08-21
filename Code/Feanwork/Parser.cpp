@@ -32,7 +32,7 @@ namespace Feanwork
 
 		if(buffer[0] != '#')
 		{
-			cout << "could not locate next keyword\n";
+			//cout << "could not locate next keyword\n";
 			return "";
 		}
 		else

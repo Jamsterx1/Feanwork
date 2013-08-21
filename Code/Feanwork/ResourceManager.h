@@ -12,7 +12,7 @@ namespace Feanwork
 	class ResourceManager
 	{
 	public:
-		void expandBatch(std::string _dir, std::string _batchFile);
+		void expandBatch(std::string _globalDir, std::string _dir, std::string _batchFile);
 		void loadBatch(std::string _dir, std::string _batchFile);
 		sf::Texture* getResource(int _id);
 

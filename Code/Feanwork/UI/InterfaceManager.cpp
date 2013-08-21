@@ -92,11 +92,13 @@ namespace Feanwork
 	void InterfaceManager::initialize(Game* _game)
 	{
 		mGamePtr = _game;
-		mDefaultFont.loadFromFile("arial.ttf");
+		mDefaultFont.loadFromFile(_game->getResourceDir() + "arial.ttf");
+		mActive = false;
 	}
 
 	bool InterfaceManager::update()
 	{
+		mActive = false;
 		sf::Vector2i mouse = EventManager::getSingleton()->getMousePos(mGamePtr);
 		if(!mBlocks.empty())
 			for(auto& i: mBlocks)
@@ -105,6 +107,8 @@ namespace Feanwork
 				{
 					if(!i.isBlockActive())
 						i.activate();
+
+					mActive = true;
 				}
 				else
 				{
@@ -129,7 +133,7 @@ namespace Feanwork
 
 	bool InterfaceManager::loadContent(UI_BATCH _batch)
 	{
-		INTERFACEBLOCK* newBlock;
+		INTERFACEBLOCK* newBlock = NULL;
 		Parser p(_batch);
 	
 		std::string keyword = "";

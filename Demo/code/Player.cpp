@@ -20,24 +20,28 @@ bool Player::update(Feanwork::Game* _game)
 		addPosition(-2.f, 0.f);
 	else if(evm->keyPressed("d"))
 		addPosition( 2.f, 0.f);
-	
+
 	if(evm->keyPressed("w"))
 		addPosition(0.f, -2.f);
 	else if(evm->keyPressed("s"))
 		addPosition(0.f,  2.f);
 
-	if(mDelay++ >= 10 && evm->mousePressed("left"))
+	if(!_game->isInterfaceActive())
 	{
-		sf::Vector2i mousePosition = evm->getMousePos(_game);
-		sf::Vector2f origin(mX + (mAABB.width * 2), mY + (mAABB.height * 2));
-		sf::Vector2f delta((float)mousePosition.x - origin.x, (float)mousePosition.y - origin.y);
-		float angle = atan2(delta.y, delta.x);
-		float power = 5.f;
+		if(mDelay++ >= 10 && evm->mousePressed("left"))
+		{
+			sf::Vector2i mousePosition = evm->getMousePos(_game);
+			sf::Vector2f origin(mX + (mAABB.width * 2), mY + (mAABB.height * 2));
+			sf::Vector2f delta((float)mousePosition.x - origin.x, (float)mousePosition.y - origin.y);
+			float angle = atan2(delta.y, delta.x);
+			float power = 5.f;
 
-		Bullet* bullet = new Bullet(1, mX, mY, sf::Vector2f(cos(angle) * power, sin(angle) * power));
-		ignore(bullet);
-		_game->pushObject(bullet);
-		mDelay = 0;
+			Bullet* bullet = new Bullet(0, mX, mY, sf::Vector2f(cos(angle) * power, sin(angle) * power));
+			ignore(bullet);
+			bullet->setUniqueType("bullet");
+			_game->pushObject(bullet);
+			mDelay = 0;
+		}
 	}
 
 	return true;
