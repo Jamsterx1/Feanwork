@@ -26,7 +26,6 @@ namespace Feanwork
 		mSoundQueue		  = new SoundQueue;
 		mWindow.create(sf::VideoMode(mWidth, mHeight), mTitle, style);
 		mWindow.setFramerateLimit(60);
-		mPlayerPtr		  = NULL;
 
 		mInterfaceManager->initialize(this);
 		EventManager::getSingleton()->loadMapping(mResourceDir + "custom.keymap");
@@ -37,6 +36,9 @@ namespace Feanwork
 		delete mCollision;
 		delete mInterfaceManager;
 		delete mSoundQueue;
+
+		if(!mCollisionCheck.empty())
+			mCollisionCheck.clear();
 	}
 
 	void Game::expandResources(string _resources)
@@ -64,6 +66,11 @@ namespace Feanwork
 	void Game::pushObject(Object* _object)
 	{
 		mStates[mGameState].push_back(_object);
+	}
+
+	void Game::addCollisionCheck(Object* _object)
+	{
+		mCollisionCheck.push_back(_object);
 	}
 
 	void Game::changeMusic(std::string _file)
@@ -113,33 +120,36 @@ namespace Feanwork
 
 		if(!mPaused)
 		{
-			if(!mStates[mGameState].empty())
-				for(unsigned i = 0; i < size; i++)
+			for(unsigned i = 0; i < size; i++)
+			{
+				if(mStates[mGameState][i]->isDestroyed())
 				{
-					if(mStates[mGameState][i]->isDestroyed())
-					{
-						mStates[mGameState].erase(mStates[mGameState].begin() + i);
-						size--;
-						continue;
-					}
-
-					Object* current = mStates[mGameState][i];
-					current->update(this);
-
-					if(mCollision && mPlayerPtr && current != mPlayerPtr && current->canCollide())
-					{
-						bool skip = false;
-						if(!mPlayerPtr->getIgnores().empty())
-						{
-							for(auto& i: mPlayerPtr->getIgnores())
-								if(i == current)
-									skip = true;
-						}
-
-						if(!skip)
-							mCollision->checkCollides(mPlayerPtr, current);
-					}
+					mStates[mGameState].erase(mStates[mGameState].begin() + i);
+					size--;
+					continue;
 				}
+
+				Object* current = mStates[mGameState][i];
+				current->update(this);
+
+				if(mCollision)
+				{
+					for(auto& i: mCollisionCheck)
+						if(current->canCollide() && current != i)
+						{
+							bool skip = false;
+							if(!i->getIgnores().empty())
+							{
+								for(auto& i: i->getIgnores())
+									if(i == current)
+										skip = true;
+							}
+
+							if(!skip)
+								mCollision->checkCollides(i, current);
+						}
+				}
+			}
 		}
 		mInterfaceManager->update();
 	}

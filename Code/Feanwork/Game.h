@@ -18,9 +18,9 @@ using namespace std;
 
 namespace Feanwork
 {
-	enum    GAMESTATE   { MENU, GAME		  };
-	enum	WINDOWSTYLE { FULLSCREEN, DEFAULT };
-	#define OBJECTS   std::vector<Object*>
+	enum    GAMESTATE   { MENU = 0, GAME		  };
+	enum	WINDOWSTYLE { FULLSCREEN = 0, DEFAULT };
+	#define OBJECTS		std::vector<Object*>
 
 	class Game
 	{
@@ -34,7 +34,7 @@ namespace Feanwork
 		void initGame(OBJECTS _objects);
 		void pushObject(Object* _object);
 
-		void setPlayer(Object* _object) { mPlayerPtr = _object; }
+		void addCollisionCheck(Object* _object);
 		void changeMusic(std::string _file);
 		void pushSound(std::string _soundFile);
 
@@ -82,7 +82,7 @@ namespace Feanwork
 		sf::Music		  mMusic;
 
 		std::map<GAMESTATE, OBJECTS> mStates;
-		Object*						 mPlayerPtr;
+		std::vector<Object*>		 mCollisionCheck;
 	};
 }
 

@@ -15,8 +15,10 @@ int main()
 	objects.push_back(player);
 	objects.push_back(obj2);
 
-	g->setPlayer(player);
+	g->addCollisionCheck(player);
+	g->addCollisionCheck(obj2);
+
 	g->initMenu(objects);
-	g->changeMusic("song.ogg");
+	//g->changeMusic("song.ogg");
 	g->initialize();
 }
