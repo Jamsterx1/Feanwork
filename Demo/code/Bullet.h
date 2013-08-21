@@ -1,7 +1,7 @@
 #ifndef BULLET_H_
 #define BULLET_H_
-#include "Feanwork/Object.h""
-#include "Feanwork/Game.h"
+#include "Object.h"
+#include "Game.h"
 
 class Bullet : public Feanwork::Object
 {

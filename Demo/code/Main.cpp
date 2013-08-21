@@ -3,7 +3,7 @@ using namespace Feanwork;
 
 int main()
 {
-	Game* g = new Game("Test", "resources", 1000, 800, false);
+	Game* g = new Game("Test", "resources/", 1000, 800, false);
 	g->loadResources("");
 
 	std::vector<Object*> objects;

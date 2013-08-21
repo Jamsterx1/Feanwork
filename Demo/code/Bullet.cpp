@@ -1,5 +1,5 @@
 #include "Bullet.h"
-#include "Feanwork/Game.h"
+#include "Game.h"
 
 Bullet::Bullet(int _resourceID, float _xPos, float _yPos, sf::Vector2f _velocity) :
 	Feanwork::Object(_resourceID, _xPos, _yPos, true)

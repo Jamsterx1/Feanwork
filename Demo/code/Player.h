@@ -1,7 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
-#include "Feanwork/Object.h"
-#include "Feanwork/Game.h"
+#include "Object.h"
+#include "Game.h"
 
 using namespace Feanwork;
 
