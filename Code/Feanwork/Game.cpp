@@ -22,6 +22,7 @@ namespace Feanwork
 		else
 			style = sf::Style::Titlebar | sf::Style::Close;
 
+		mMusic.setVolume(70.f);
 		mGameState		  = MENU;
 		mCollision		  = new Collision;
 		mInterfaceManager = new InterfaceManager;
