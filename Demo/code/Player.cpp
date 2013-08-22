@@ -18,25 +18,44 @@ bool Player::update(Feanwork::Game* _game)
 	// input
 	EventManager* evm = EventManager::getSingleton();
 	if(evm->keyPressed("a"))
-		addPosition(-2.f, 0.f);
+	{
+		sf::Vector2f position(-200.f * _game->getDelta(), 0.f);
+		addPosition(position.x, position.y);
+		_game->moveCamera(position.x, position.y);
+	}
 	else if(evm->keyPressed("d"))
-		addPosition( 2.f, 0.f);
+	{
+		sf::Vector2f position(200.f * _game->getDelta(), 0.f);
+		addPosition(position.x, position.y);
+		_game->moveCamera(position.x, position.y);
+	}
 
 	if(evm->keyPressed("w"))
-		addPosition(0.f, -2.f);
+	{
+		sf::Vector2f position(0.f, -200.f * _game->getDelta());
+		addPosition(position.x, position.y);
+		_game->moveCamera(position.x, position.y);
+	}
 	else if(evm->keyPressed("s"))
-		addPosition(0.f,  2.f);
+	{
+		sf::Vector2f position(0.f, 200.f * _game->getDelta());
+		addPosition(position.x, position.y);
+		_game->moveCamera(position.x, position.y);
+	}
 
 	if(!_game->isInterfaceActive())
 	{
 		if(mDelay++ >= 10 && evm->mousePressed("left"))
 		{
 			sf::Vector2i mousePosition = evm->getMousePos(_game);
+			sf::View view = _game->getCamera();
+			sf::Vector2f mousePosTrans = _game->getWindow()->mapPixelToCoords(mousePosition, view);
 			sf::Vector2f origin(mX + mAABB.width, mY + mAABB.height);
-			sf::Vector2f delta((float)mousePosition.x - origin.x, (float)mousePosition.y - origin.y);
+
+			sf::Vector2f delta(mousePosTrans.x - origin.x, mousePosTrans.y - origin.y);
 			float angle = atan2(delta.y, delta.x);
-			float power = 5.f;
-			int   id = rand() % 3;
+			float power = 500.f;
+			int id		= rand() % 3;
 
 			Bullet* bullet = new Bullet(id, origin.x, origin.y, sf::Vector2f(cos(angle) * power, sin(angle) * power));
 			ignore(bullet);

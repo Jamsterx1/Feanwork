@@ -5,7 +5,7 @@ Bullet::Bullet(int _resourceID, float _xPos, float _yPos, sf::Vector2f _velocity
 	Feanwork::Object(_resourceID, _xPos, _yPos, true)
 {
 	mVelocity = _velocity;
-	mCounter = 0;
+	mCounter = 0.0f;
 }
 
 Bullet::~Bullet(void)
@@ -14,11 +14,11 @@ Bullet::~Bullet(void)
 
 bool Bullet::update(Feanwork::Game* _game)
 {
-	mCounter++;
-	if(mCounter >= 600)
+	mCounter += _game->getDelta();
+	if(mCounter >= 6000.0f)
 		destroy();
 
-	addPosition(mVelocity.x, mVelocity.y);
+	addPosition(mVelocity.x * _game->getDelta(), mVelocity.y * _game->getDelta());
 	return true;
 }
 

@@ -3,5 +3,5 @@
 #Switch 	 60, 10, 5, 6	, switchMusic , switch
 #Button 	110, 10, 5, 6, 7, test		  , buttonTest2
 #Text 		 10, 50,  16, button		  , buttonText
-#Text	 	 60, 50,  12, Music		   	  ,  switch
+#Text	 	 60, 50,  16, Music		   	  ,  switch
 #Text 		110, 50,  16, button		  , buttonText2

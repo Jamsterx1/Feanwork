@@ -12,12 +12,12 @@
 #SizeStartVariant 0
 #SizeEndVariant 0
 
-#SpeedStart 0.4
-#SpeedEnd 0.4
-#SpeedStartVariant 0.005
-#SpeedEndVariant 0.005
+#SpeedStart 40
+#SpeedEnd 40
+#SpeedStartVariant 5
+#SpeedEndVariant 5
 
 #LifeTime 2000.0
 #LifeTimeVariant 200.0
 
-#PositionVariant 10, 0
+#PositionVariant 10, 10

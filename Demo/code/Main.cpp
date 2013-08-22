@@ -34,6 +34,6 @@ int main()
 	g->addCollisionCheck(obj3);
 
 	g->initMenu(objects);
-	g->changeMusic("song.ogg");
+	//g->changeMusic("song.ogg");
 	g->initialize();
 }

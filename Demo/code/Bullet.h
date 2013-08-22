@@ -15,7 +15,7 @@ public:
 
 protected:
 	sf::Vector2f mVelocity;
-	int mCounter;
+	float		 mCounter;
 };
 
 #endif

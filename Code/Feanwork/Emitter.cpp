@@ -24,68 +24,69 @@ namespace Feanwork
 	}
 
 	void Emitter::update(Game* _game)
-	{
-		if(!mActive)
-			return;
+ 	{
+ 		if(!mActive)
+ 			return;
+ 
+ 		assert(mParticles);
+ 		Particle* curP;
+ 
+		mAccum += _game->getDelta() * 2000.0f; //temp
+ 		int newParticles = (int)(mBirthRate * mAccum);
+ 
+ 		if(newParticles > 0)
+ 			mAccum = 0.0f;
+ 
+ 		bool resume = false;
+ 
+ 		for(unsigned i = 0; i < mNumParticles; i++)
+ 		{
+ 			curP = &mParticles[i];
+			curP->age += _game->getDelta() * 1000.0f;
+ 
+ 			if(curP->age > curP->lifeTime)
+ 			{
+ 				if(newParticles > 0)
+ 				{
+ 					if(!mLoop && (curP->lifeTime > 0.0f))
+ 						continue;
+ 
+ 					emit(*curP, i);
+ 					newParticles--;
+ 				}
+ 
+ 				resume = true;
+ 				//temp //continue;
+ 			}
+ 
+			curP->direction += mForce * _game->getDelta();
+			curP->sprite.move(curP->direction * curP->speed * _game->getDelta());
+ 
+ 			float ratio		= curP->age / curP->lifeTime;
+ 			float inv_ratio = (1.0f - ratio);
+ 
+ 			if(ratio > 1)
+ 				ratio = 1;
+ 
+ 			float scale		= (inv_ratio * curP->sizeStart + ratio * curP->sizeEnd);
+ 			curP->sprite.setScale(scale, scale);
+ 
+ 			curP->speed	= (inv_ratio * curP->speedStart + ratio * curP->speedEnd);
+ 
+ 			sf::Color colour;
+ 			colour.r		= (sf::Uint8)(inv_ratio * curP->colourStart.r + ratio * curP->colourEnd.r);
+ 			colour.g		= (sf::Uint8)(inv_ratio * curP->colourStart.g + ratio * curP->colourEnd.g);
+ 			colour.b		= (sf::Uint8)(inv_ratio * curP->colourStart.b + ratio * curP->colourEnd.b);
+ 			colour.a		= (sf::Uint8)(inv_ratio * curP->colourStart.a + ratio * curP->colourEnd.a);
+ 			curP->sprite.setColor(colour);
+ 
+ 			resume = true;
+ 		}
+ 
+ 		if(!mLoop && !resume)
+ 			mActive = false;
+ 	}
 
-		assert(mParticles);
-		Particle* curP;
-
-		mAccum += 1000;//Entity::m_delta_time;
-		int newParticles = (int)(mBirthRate * mAccum);
-
-		if(newParticles > 0)
-			mAccum = 0.0f;
-
-		bool resume = false;
-
-		for(unsigned i = 0; i < mNumParticles; i++)
-		{
-			curP = &mParticles[i];
-			curP->age += 10; //Entity::m_delta_time;
-
-			if(curP->age > curP->lifeTime)
-			{
-				if(newParticles > 0)
-				{
-					if(!mLoop && (curP->lifeTime > 0.0f))
-						continue;
-
-					emit(*curP, i);
-					newParticles--;
-				}
-
-				resume = true;
-				continue;
-			}
-
-			curP->direction += mForce; /* add some controller for frames? */
-			curP->sprite.move(curP->direction * curP->speed/* add some controller for frames? */);
-
-			float ratio		= curP->age / curP->lifeTime;
-			float inv_ratio = (1.0f - ratio);
-
-			if(ratio > 1)
-				ratio = 1;
-
-			float scale		= (inv_ratio * curP->sizeStart + ratio * curP->sizeEnd);
-			curP->sprite.setScale(scale, scale);
-
-			curP->speed	= (inv_ratio * curP->speedStart + ratio * curP->speedEnd);
-
-			sf::Color colour;
-			colour.r		= (sf::Uint8)(inv_ratio * curP->colourStart.r + ratio * curP->colourEnd.r);
-			colour.g		= (sf::Uint8)(inv_ratio * curP->colourStart.g + ratio * curP->colourEnd.g);
-			colour.b		= (sf::Uint8)(inv_ratio * curP->colourStart.b + ratio * curP->colourEnd.b);
-			colour.a		= (sf::Uint8)(inv_ratio * curP->colourStart.a + ratio * curP->colourEnd.a);
-			curP->sprite.setColor(colour);
-
-			resume = true;
-		}
-
-		if(!mLoop && !resume)
-			mActive = false;
-	}
 
 	void Emitter::render(Game* _game)
 	{
@@ -116,7 +117,8 @@ namespace Feanwork
 		else if(mEmitter == EMITTERTYPE_Directional)
 			_particle.direction		= mDirection;
 
-		_particle.sprite.setPosition((rand->rand_range(-1, 1) *  mPositionVariant	) + mPosition);
+		_particle.sprite.setPosition((sf::Vector2f(rand->rand_range(-1, 1) *  mPositionVariant.x, 
+									  rand->rand_range(-1, 1) * mPositionVariant.y)) + mPosition);
 		_particle.speedStart		= (rand->rand_range(-1, 1) * mSpeedStartVariant	) + mSpeedStart;
 		_particle.speedEnd			= (rand->rand_range(-1, 1) * mSpeedEndVariant	) + mSpeedEnd;
 		_particle.age				=  0.0f;

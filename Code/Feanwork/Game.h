@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <chrono>
 
 #include "ResourceManager.h"
 #include "EventManager.h"
@@ -16,12 +17,13 @@
 #include "UI/InterfaceManager.h"
 
 using namespace std;
+using namespace std::chrono;
 
 namespace Feanwork
 {
 	enum    GAMESTATE   { MENU = 0, GAME		  };
 	enum	WINDOWSTYLE { FULLSCREEN = 0, DEFAULT };
-	#define OBJECTS		std::vector<Object*>
+	#define OBJECTS		vector<Object*>
 
 	class Game
 	{
@@ -40,20 +42,26 @@ namespace Feanwork
 
 		void	   changeMusic(std::string _file);
 		void	   pushSound(std::string _soundFile);
-		sf::Music* getMusic() { return &mMusic; }
+		sf::Music* getMusic()   { return &mMusic; }
+		void	   pauseMusic() { mMusic.pause(); }
 
 		void loadUIContent(string _batch);
 		void addUICallback(std::string _name, UICallback _callback);
+
+		sf::View	 getCamera() { return mCamera; }
+		void		 moveCamera(float _x, float _y);
+		sf::Vector2f getCameraPosition();
 
 		void initialize();
 		void update();
 		void render();
 		void clean();
 
-		int				  getWidth()		  { return mWidth;		}
-		int				  getHeight()		  { return mHeight;		}
-		string			  getTitle()		  { return mTitle;		}
-		sf::RenderWindow* getWindow()		  { return &mWindow;	}
+		int				  getWidth()  { return mWidth;	   }
+		int				  getHeight() { return mHeight;	   }
+		string			  getTitle()  { return mTitle;	   }
+		sf::RenderWindow* getWindow() { return &mWindow;   }
+		float			  getDelta()  { return mDeltaTime; }
 		sf::Texture*	  getTexture(int _resourceID);
 		bool			  isInterfaceActive() { return mInterfaceManager->isActive(); }
 
@@ -84,10 +92,14 @@ namespace Feanwork
 		SoundQueue*		  mSoundQueue;
 		sf::RenderWindow  mWindow;
 		sf::Music		  mMusic;
+		sf::View		  mCamera;
 
-		std::map<GAMESTATE, OBJECTS> mStates;
-		std::vector<Object*>		 mCollisionCheck;
-		std::vector<Emitter*>		 mEmitters;
+		map<GAMESTATE, OBJECTS> mStates;
+		vector<Object*>			mCollisionCheck;
+		vector<Emitter*>		mEmitters;
+
+		monotonic_clock::time_point mLastTime;
+		float						mDeltaTime;
 	};
 }
 

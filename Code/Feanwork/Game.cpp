@@ -2,7 +2,8 @@
 
 namespace Feanwork
 {
-	Game::Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen)
+	Game::Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen) :
+		mCamera(sf::FloatRect(0, 0, _width, _height))
 	{
 		srand((unsigned)time(NULL));
 
@@ -11,6 +12,7 @@ namespace Feanwork
 		mTitle		 = _title;
 		mResourceDir = _resourceDir;
 		mRunning	 = true;
+		mDeltaTime   = 0.0f;
 
 		unsigned style;
 		if(_screen == FULLSCREEN)
@@ -88,24 +90,31 @@ namespace Feanwork
 			mSoundQueue->pushSound(mResourceDir + _soundFile);
 	}
 
-	void Game::loadUIContent(string _batch)
-	{
-		mInterfaceManager->loadContent(mResourceDir + _batch);
+	void Game::loadUIContent(string _batch)							  
+	{ 
+		mInterfaceManager->loadContent(mResourceDir + _batch); 
 	}
-
-	void Game::addUICallback(std::string _name, UICallback _callback)
-	{
-		mInterfaceManager->addCallback(_name, _callback);
+	
+	void Game::addUICallback(std::string _name, UICallback _callback) 
+	{ 
+		mInterfaceManager->addCallback(_name, _callback);	   
 	}
+	
+	void Game::moveCamera(float _x, float _y) { mCamera.move(sf::Vector2f(_x, _y));	}
+	sf::Vector2f Game::getCameraPosition()	  { return mCamera.getCenter();			}				
 
 	void Game::initialize()
 	{
+		milliseconds ms;
 		while(mRunning)
 		{
+			mLastTime = monotonic_clock::now();
 			update();
 			render();
-		}
 
+			ms		   = duration_cast<milliseconds>(monotonic_clock::now() - mLastTime);
+			mDeltaTime = (float)ms.count() / 1000.0f;
+		}
 		clean();
 	}
 
@@ -113,7 +122,8 @@ namespace Feanwork
 	{
 		EventManager::getSingleton()->update(this);
 		mSoundQueue->update();
-		unsigned size = mStates[mGameState].size();
+		unsigned size		 = mStates[mGameState].size();
+		unsigned emitterSize = mEmitters.size();
 
 		if(!mPaused)
 		{
@@ -150,7 +160,7 @@ namespace Feanwork
 
 			if(!mEmitters.empty())
 			{
-				for(unsigned i = 0; i < mEmitters.size(); i++)
+				for(unsigned i = 0; i < emitterSize; i++)
 				{
 					if(!mEmitters[i]->isActive())
 					{
@@ -158,7 +168,7 @@ namespace Feanwork
 						delete mEmitters[i];
 
 						mEmitters.erase(mEmitters.begin() + i);
-						size--;
+						emitterSize--;
 						continue;
 					}
 					mEmitters[i]->update(this);
@@ -171,6 +181,7 @@ namespace Feanwork
 	void Game::render()
 	{
 		mWindow.clear(sf::Color::Black);
+		mWindow.setView(mCamera);
 		unsigned size = mStates[mGameState].size();
 		if(!mStates[mGameState].empty())
 			for(unsigned i = 0; i < size; i++)
@@ -180,6 +191,7 @@ namespace Feanwork
 			for(auto& i: mEmitters)
 				i->render(this);
 
+		mWindow.setView(mWindow.getDefaultView());
 		mInterfaceManager->render();
 		mWindow.display();
 	}
