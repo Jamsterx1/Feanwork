@@ -1,9 +1,9 @@
-#ResourceID 0
+#ResourceID 8
 #NumParticles 80
 ~#Pulse 1.0, 200.0
 
-#ColourStart 0, 162, 232, 200
-#ColourEnd 0, 162, 232, 20
+#ColourStart 211, 20, 0, 200
+#ColourEnd 180, 15, 0, 20
 #ColourStartVariant 0, 0, 0, 0
 #ColourEndVariant 0, 0, 0, 0
 

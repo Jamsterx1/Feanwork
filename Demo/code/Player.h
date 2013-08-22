@@ -2,10 +2,11 @@
 #define PLAYER_H_
 #include "Object.h"
 #include "Game.h"
+#include "Animation.h"
 
 using namespace Feanwork;
 
-class Player : public Feanwork::Object
+class Player : public Feanwork::Object, public Feanwork::Animation
 {
 public: 
 	Player(int _resourceID, float _xPos, float _yPos);

@@ -1,7 +1,7 @@
 #Boundaries  70,  0, 160, 80
-#Button 	 10, 10, 4, 5, 6, test, buttonTest
-#Switch 	 60, 10, 4, 5	, test, switchTest
-#Button 	110, 10, 4, 5, 6, test, buttonTest2
+#Button 	 10, 10, 5, 6, 7, test, buttonTest
+#Switch 	 60, 10, 5, 6	, test, switchTest
+#Button 	110, 10, 5, 6, 7, test, buttonTest2
 #Text 		 10, 50,  16, button, buttonText
 #Text	 	 60, 50,  16, switch, switchText
 #Text 		110, 50,  16, button, buttonText2

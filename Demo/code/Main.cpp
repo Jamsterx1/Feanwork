@@ -12,8 +12,8 @@ int main()
 
 	std::vector<Object*> objects;
 	Player* player = new Player(3, (float)g->getWidth() / 2, (float)g->getHeight() / 2);
-	Object* obj2 = new Object(3, 10, 10, true);
-	Object* obj3 = new Object(3, 200, 500, true);
+	Object* obj2 = new Object(4, 10, 10, true);
+	Object* obj3 = new Object(4, 200, 500, true);
 	objects.push_back(player);
 	objects.push_back(obj2);
 	objects.push_back(obj3);

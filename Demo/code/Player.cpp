@@ -3,7 +3,8 @@
 #include "Bullet.h"
 
 Player::Player(int _resourceID, float _xPos, float _yPos) :
-	Feanwork::Object(_resourceID, _xPos, _yPos, false)
+	Feanwork::Object(_resourceID, _xPos, _yPos, false),
+	Animation(this, "resources/animation/player.anim")
 {
 	mDelay = 0;
 }
@@ -45,6 +46,7 @@ bool Player::update(Feanwork::Game* _game)
 		}
 	}
 
+	Animation::update(_game);
 	return true;
 }
 

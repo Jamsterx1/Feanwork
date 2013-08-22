@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "Game.h"
+#include "Animation.h"
 #include <SFML/Graphics.hpp>
 
 namespace Feanwork
@@ -27,6 +28,20 @@ namespace Feanwork
 
 	void Object::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game)
 	{
+	}
+
+	void Object::setRect(int _x, int _y, int _width, int _height)
+	{
+		mSprite.setTextureRect(sf::IntRect(_x, _y, _width, _height));
+		mAABB.width  = _width;
+		mAABB.height = _height;
+	}
+
+	void Object::setRect(Frame _frame)
+	{
+		mSprite.setTextureRect(sf::IntRect(_frame.x, _frame.y, _frame.width, _frame.height));
+		mAABB.width  = _frame.width  / 2;
+		mAABB.height = _frame.height / 2;
 	}
 
 	void Object::setPosition(float _x, float _y)
