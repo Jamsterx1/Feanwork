@@ -13,7 +13,7 @@ namespace Feanwork
 
 		virtual bool update(Game* _game) { return true; }
 		virtual bool render(Game* _game);
-		virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal);
+		virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game);
 		void		 setPosition(float _x, float _y);
 		void		 addPosition(float _x, float _y);
 

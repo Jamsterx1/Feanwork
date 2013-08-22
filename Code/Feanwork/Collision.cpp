@@ -1,10 +1,11 @@
 #include <cmath>
 #include "Collision.h"
 #include "Object.h"
+#include "Game.h"
 
 namespace Feanwork
 {
-	bool Collision::checkCollides(Object* _first, Object* _second)
+	bool Collision::checkCollides(Object* _first, Object* _second, Game* _game)
 	{
 		sf::Vector2f depth(0, 0);
 		sf::Vector2f normal(0, 0);
@@ -25,8 +26,8 @@ namespace Feanwork
 			normal = getNormal(sf::Vector2f(dx * invDist, dy * invDist));
 			depth  = sf::Vector2f((float)abs(adx - sw), (float)abs(ady - sh));
 
-			_first->collisionCallback(depth, normal);
-			_second->collisionCallback(depth, normal);
+			_first->collisionCallback(depth, normal, _game);
+			_second->collisionCallback(depth, normal, _game);
 
 			return true;
 		}

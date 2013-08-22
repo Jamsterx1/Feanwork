@@ -4,7 +4,7 @@ namespace Feanwork
 {
 	Game::Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen)
 	{
-		srand(time(NULL));
+		srand((unsigned)time(NULL));
 
 		mWidth		 = _width;
 		mHeight		 = _height;
@@ -65,15 +65,9 @@ namespace Feanwork
 			mStates[GAME].push_back(i);
 	}
 
-	void Game::pushObject(Object* _object)
-	{
-		mStates[mGameState].push_back(_object);
-	}
-
-	void Game::addCollisionCheck(Object* _object)
-	{
-		mCollisionCheck.push_back(_object);
-	}
+	void Game::pushObject(Object* _object)		  { mStates[mGameState].push_back(_object); }
+	void Game::addCollisionCheck(Object* _object) { mCollisionCheck.push_back(_object);		}
+	void Game::addEmitter(Emitter* _emitter)	  { mEmitters.push_back(_emitter);			}
 
 	void Game::changeMusic(std::string _file)
 	{
@@ -148,8 +142,25 @@ namespace Feanwork
 							}
 
 							if(!skip)
-								mCollision->checkCollides(i, current);
+								mCollision->checkCollides(i, current, this);
 						}
+				}
+			}
+
+			if(!mEmitters.empty())
+			{
+				for(unsigned i = 0; i < mEmitters.size(); i++)
+				{
+					if(!mEmitters[i]->isActive())
+					{
+						mEmitters[i]->clean();
+						delete mEmitters[i];
+
+						mEmitters.erase(mEmitters.begin() + i);
+						size--;
+						continue;
+					}
+					mEmitters[i]->update(this);
 				}
 			}
 		}
@@ -163,6 +174,10 @@ namespace Feanwork
 		if(!mStates[mGameState].empty())
 			for(unsigned i = 0; i < size; i++)
 				mStates[mGameState][i]->render(this);
+
+		if(!mEmitters.empty())
+			for(auto& i: mEmitters)
+				i->render(this);
 
 		mInterfaceManager->render();
 		mWindow.display();
@@ -182,18 +197,21 @@ namespace Feanwork
 		return ResourceManager::getSingleton()->getResource(_resourceID);
 	}
 
-	sf::Vector2i Game::getMousePosition()
+	void Game::resume()
 	{
-		return EventManager::getSingleton()->getMousePos(this);
+		mPaused = false;
+		if(mMusic.getStatus() == sf::Music::Paused)
+			mMusic.play();
 	}
 
-	bool Game::keyPressed(string _key)
+	void Game::pause()
 	{
-		return EventManager::getSingleton()->keyPressed(_key);
+		mPaused = true;
+		if(mMusic.getStatus() == sf::Music::Playing)
+			mMusic.pause();
 	}
 
-	bool Game::keyPressedOnFrame(string _key)
-	{
-		return EventManager::getSingleton()->keyPressedOnFrame(_key);
-	}
+	sf::Vector2i Game::getMousePosition()	  { return EventManager::getSingleton()->getMousePos(this);		  }
+	bool Game::keyPressed(string _key)		  { return EventManager::getSingleton()->keyPressed(_key);		  }
+	bool Game::keyPressedOnFrame(string _key) { return EventManager::getSingleton()->keyPressedOnFrame(_key); }
 }

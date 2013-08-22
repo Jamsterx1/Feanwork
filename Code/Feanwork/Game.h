@@ -12,6 +12,7 @@
 #include "Object.h"
 #include "Collision.h"
 #include "SoundQueue.h"
+#include "Emitter.h"
 #include "UI/InterfaceManager.h"
 
 using namespace std;
@@ -35,6 +36,8 @@ namespace Feanwork
 		void pushObject(Object* _object);
 
 		void addCollisionCheck(Object* _object);
+		void addEmitter(Emitter* _emitter);
+
 		void changeMusic(std::string _file);
 		void pushSound(std::string _soundFile);
 
@@ -58,8 +61,8 @@ namespace Feanwork
 		void   setState(GAMESTATE _state) { mGameState = _state;  }
 		void   exit()					  { mRunning = false;	  }
 
-		void resume()					{ mPaused = false;	   }
-		void pause()					{ mPaused = true;	   }
+		void resume();
+		void pause();
 		bool isPaused()					{ return mPaused;	   }
 
 		sf::Vector2i getMousePosition();
@@ -83,6 +86,7 @@ namespace Feanwork
 
 		std::map<GAMESTATE, OBJECTS> mStates;
 		std::vector<Object*>		 mCollisionCheck;
+		std::vector<Emitter*>		 mEmitters;
 	};
 }
 

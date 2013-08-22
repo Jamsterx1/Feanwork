@@ -4,6 +4,7 @@
 
 namespace Feanwork
 {
+	class Game;
 	class Object;
 	class Collision
 	{
@@ -11,7 +12,7 @@ namespace Feanwork
 		Collision() {}
 		~Collision() {}
 
-		bool		 checkCollides(Object* _first, Object* _second);
+		bool		 checkCollides(Object* _first, Object* _second, Game* _game);
 		sf::Vector2f getNormal(sf::Vector2f _vector);
 	};
 }

@@ -25,7 +25,7 @@ namespace Feanwork
 		return true;
 	}
 
-	void Object::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal)
+	void Object::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game)
 	{
 	}
 

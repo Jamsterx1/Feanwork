@@ -11,7 +11,7 @@ public:
 
 	virtual bool update(Feanwork::Game* _game);
 	virtual bool render(Feanwork::Game* _game);
-	virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal);
+	virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Feanwork::Game* _game);
 
 protected:
 	sf::Vector2f mVelocity;
