@@ -21,7 +21,7 @@ namespace Feanwork
 	{
 		mDependancy = _dependacy;
 		mText.setPosition(mPosition.x, mPosition.y);
-		mText.setString(_text);
+		mText.setString(sf::String(_text).toAnsiString());
 		mText.setCharacterSize(_charSize);
 		mText.setFont(*_font);
 	}
@@ -48,6 +48,6 @@ namespace Feanwork
 
 	void Text::setString(std::string _text)
 	{
-		mText.setString(_text);
+		mText.setString(sf::String(_text).toAnsiString());
 	}
 }

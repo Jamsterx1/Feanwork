@@ -5,7 +5,7 @@
 
 namespace Feanwork
 {
-	typedef void (*UICallback)(void* data);
+	typedef void (*UICallback)(Game* _game);
 	enum CLICKSTATE
 	{
 		CLICKSTATE_Released = 0,
@@ -35,17 +35,16 @@ namespace Feanwork
 		Button(INTERFACEBLOCK* _parentBlock, sf::Vector2f _position, std::string _name);
 		~Button();
 
-		void initialize(int _resourceIDS[3],  UICallback _callback, void* _data = NULL);
+		void initialize(int _resourceIDS[3],  UICallback _callback);
 		virtual bool update(Game* _game);
 		virtual bool draw(Game* _game);
 
 		bool pressed();
 		void setClickState(CLICKSTATE _state);
-		void callEvent();
+		void callEvent(Game* _game);
 
 	protected:
 		UICallback		mCallback;
-		void*			mCallbackData;
 		CLICKSTATE		mClickState;
 		Button_Data		mData;
 		bool			mClicked;

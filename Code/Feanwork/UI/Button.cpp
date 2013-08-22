@@ -19,7 +19,7 @@ namespace Feanwork
 	{
 	}
 
-	void Button::initialize(int _resourceIDS[3], UICallback _callback, void* _data)
+	void Button::initialize(int _resourceIDS[3], UICallback _callback)
 	{
 		mData.textures[CLICKSTATE_Released] = ResourceManager::getSingleton()->getResource(_resourceIDS[CLICKSTATE_Released]);
 		mData.textures[CLICKSTATE_Hover]    = ResourceManager::getSingleton()->getResource(_resourceIDS[CLICKSTATE_Hover]);
@@ -34,7 +34,6 @@ namespace Feanwork
 		mData.sprites[CLICKSTATE_Pressed].setPosition(mPosition.x, mPosition.y);
 
 		mCallback		= _callback;
-		mCallbackData	= _data;
 		setBounds((float)mData.textures[0]->getSize().x, (float)mData.textures[0]->getSize().y);
 	}
 
@@ -59,7 +58,7 @@ namespace Feanwork
 		if(pressed())
 		{
 			mClickState = CLICKSTATE_Pressed;
-			callEvent();
+			callEvent(_game);
 			mClicked = true;
 		}
 
@@ -82,9 +81,9 @@ namespace Feanwork
 		return false;
 	}
 
-	void Button::callEvent()
+	void Button::callEvent(Game* _game)
 	{
 		if(mCallback)
-			mCallback(mCallbackData);
+			mCallback(_game);
 	}
 }

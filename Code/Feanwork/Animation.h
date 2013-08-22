@@ -24,7 +24,7 @@ namespace Feanwork
 	class Animation
 	{
 	public:
-		Animation(Object* _hook, FILE _animSet);
+		Animation(Object* _hook, FILE _animSet, bool _loop = true);
 		~Animation();
 
 		bool		 update(Game* _game);
@@ -39,6 +39,7 @@ namespace Feanwork
 		std::string	mCurrentAnim;
 		int			mCurrentFrame;
 		bool		mFlipped;
+		bool		mLoop;
 	};
 }
 

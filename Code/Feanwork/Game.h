@@ -38,8 +38,9 @@ namespace Feanwork
 		void addCollisionCheck(Object* _object);
 		void addEmitter(Emitter* _emitter);
 
-		void changeMusic(std::string _file);
-		void pushSound(std::string _soundFile);
+		void	   changeMusic(std::string _file);
+		void	   pushSound(std::string _soundFile);
+		sf::Music* getMusic() { return &mMusic; }
 
 		void loadUIContent(string _batch);
 		void addUICallback(std::string _name, UICallback _callback);

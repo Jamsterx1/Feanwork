@@ -5,11 +5,12 @@
 
 namespace Feanwork
 {
-	Animation::Animation(Object* _hook, FILE _animSet)
+	Animation::Animation(Object* _hook, FILE _animSet, bool _loop)
 	{
-		mHook = _hook;
+		mHook	   = _hook;
 		mStepCount = 0;
-	
+		mLoop	   = _loop;
+
 		std::string keyword = "";
 		Parser p(_animSet);
 
@@ -53,10 +54,16 @@ namespace Feanwork
 
 	bool Animation::update(Game* _game)
 	{
-		if(mStepCount >= 5)
+		if(mLoop && mStepCount >= 5)
 		{
 			mHook->setRect(*nextFrame(mCurrentAnim, mCurrentFrame));
 			mStepCount = 0;
+		}
+		else if(!mLoop && mStepCount >= 5)
+		{
+			mStepCount = 0;
+			if(mCurrentFrame < (int)mAnimations[mCurrentAnim].size() - 1)
+				mHook->setRect(*nextFrame(mCurrentAnim, mCurrentFrame));
 		}
 		else
 			mStepCount++;

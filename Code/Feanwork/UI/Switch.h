@@ -5,7 +5,7 @@
 
 namespace Feanwork
 {
-	typedef void (*UICallback)(void* data);
+	typedef void (*UICallback)(Game* _game);
 	enum SWITCHSTATE
 	{
 		SWITCHSTATE_INACTIVE = 0,
@@ -33,18 +33,17 @@ namespace Feanwork
 		Switch(INTERFACEBLOCK* _parentBlock, sf::Vector2f _position, std::string _name);
 		~Switch();
 
-		void initialize(int _resourceIDs[2], UICallback _callback, void* _data = NULL);
+		void initialize(int _resourceIDs[2], UICallback _callback);
 		virtual bool update(Game*_game);
 		virtual bool draw(Game*_game);
 
 		bool pressed();
 		void setSwitchState(SWITCHSTATE _state);
-		void callEvent();
+		void callEvent(Game* _game);
 		bool isActive();
 
 	protected:
 		UICallback		mCallback;
-		void*			mCallbackData;
 		SWITCHSTATE		mSwitchState;
 		Switch_Data		mData;
 		bool			mClicked;

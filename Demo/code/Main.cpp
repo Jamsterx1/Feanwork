@@ -1,5 +1,14 @@
 #include "player.h"
+#include <SFML/Audio.hpp>
 using namespace Feanwork;
+
+void switchMusic(Game* _game)
+{
+	if(_game->getMusic()->getStatus() == sf::Music::Playing)
+		_game->getMusic()->pause();
+	else if(_game->getMusic()->getStatus() == sf::Music::Paused)
+		_game->getMusic()->play();
+}
 
 int main()
 {
@@ -8,6 +17,8 @@ int main()
 	g->expandResources("ui/");
 	g->expandResources("particles/");
 	g->loadResources("");
+
+	g->addUICallback("switchMusic", switchMusic);
 	g->loadUIContent("test.block");
 
 	std::vector<Object*> objects;

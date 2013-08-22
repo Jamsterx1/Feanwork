@@ -23,7 +23,7 @@ namespace Feanwork
 	{
 	}
 
-	void Switch::initialize(int _resourceIDs[2], UICallback _callback, void* _data)
+	void Switch::initialize(int _resourceIDs[2], UICallback _callback)
 	{
 		mData.textures[SWITCHSTATE_INACTIVE] = ResourceManager::getSingleton()->getResource(_resourceIDs[SWITCHSTATE_INACTIVE]);
 		mData.textures[SWITCHSTATE_ACTIVE] = ResourceManager::getSingleton()->getResource(_resourceIDs[SWITCHSTATE_ACTIVE]);
@@ -34,7 +34,6 @@ namespace Feanwork
 		mData.sprites[SWITCHSTATE_ACTIVE].setPosition(mPosition.x, mPosition.y);
 
 		mCallback		= _callback;
-		mCallbackData	= _data;
 		setBounds((float)mData.textures[0]->getSize().x, (float)mData.textures[0]->getSize().y);
 	}
 
@@ -59,12 +58,12 @@ namespace Feanwork
 			if(mSwitchState == SWITCHSTATE_INACTIVE)
 			{
 				mSwitchState = SWITCHSTATE_ACTIVE;
-				callEvent();
+				callEvent(_game);
 			}
 			else if(mSwitchState == SWITCHSTATE_ACTIVE)
 			{
 				mSwitchState = SWITCHSTATE_INACTIVE;
-				callEvent();
+				callEvent(_game);
 			}
 
 			mRecent	  = true;
@@ -98,10 +97,10 @@ namespace Feanwork
 		mSwitchState = _state;
 	}
 
-	void Switch::callEvent()
+	void Switch::callEvent(Game* _game)
 	{
 		if(mCallback)
-			mCallback(mCallbackData);
+			mCallback(_game);
 	}
 
 	bool Switch::isActive()
