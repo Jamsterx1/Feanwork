@@ -4,6 +4,8 @@ namespace Feanwork
 {
 	Game::Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen)
 	{
+		srand(time(NULL));
+
 		mWidth		 = _width;
 		mHeight		 = _height;
 		mTitle		 = _title;

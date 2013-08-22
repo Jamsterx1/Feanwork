@@ -10,8 +10,8 @@ int main()
 	g->loadUIContent("test.block");
 
 	std::vector<Object*> objects;
-	Player* player = new Player(1, (float)g->getWidth() / 2, (float)g->getHeight() / 2);
-	Object* obj2 = new Object(1, 10, 10, true);
+	Player* player = new Player(3, (float)g->getWidth() / 2, (float)g->getHeight() / 2);
+	Object* obj2 = new Object(3, 10, 10, true);
 	objects.push_back(player);
 	objects.push_back(obj2);
 
