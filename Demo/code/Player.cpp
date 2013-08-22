@@ -31,13 +31,13 @@ bool Player::update(Feanwork::Game* _game)
 		if(mDelay++ >= 10 && evm->mousePressed("left"))
 		{
 			sf::Vector2i mousePosition = evm->getMousePos(_game);
-			sf::Vector2f origin(mX + (mAABB.width * 2), mY + (mAABB.height * 2));
+			sf::Vector2f origin(mX + mAABB.width, mY + mAABB.height);
 			sf::Vector2f delta((float)mousePosition.x - origin.x, (float)mousePosition.y - origin.y);
 			float angle = atan2(delta.y, delta.x);
 			float power = 5.f;
 			int   id = rand() % 3;
 
-			Bullet* bullet = new Bullet(id, mX, mY, sf::Vector2f(cos(angle) * power, sin(angle) * power));
+			Bullet* bullet = new Bullet(id, origin.x, origin.y, sf::Vector2f(cos(angle) * power, sin(angle) * power));
 			ignore(bullet);
 			bullet->setUniqueType("bullet");
 			_game->pushObject(bullet);
