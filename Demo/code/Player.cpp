@@ -78,4 +78,5 @@ bool Player::render(Feanwork::Game* _game)
 void Player::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game)
 {
 	addPosition(_depth.x * _normal.x, _depth.y * _normal.y);
+	_game->moveCamera(_depth.x * _normal.x, _depth.y * _normal.y);
 }

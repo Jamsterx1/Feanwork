@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Game.h"
 
+class Emitter;
 class Bullet : public Feanwork::Object
 {
 public:
@@ -16,6 +17,8 @@ public:
 protected:
 	sf::Vector2f mVelocity;
 	float		 mCounter;
+
+	Feanwork::Emitter mEmitter;
 };
 
 #endif

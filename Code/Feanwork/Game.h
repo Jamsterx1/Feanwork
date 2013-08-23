@@ -40,7 +40,7 @@ namespace Feanwork
 		void addCollisionCheck(Object* _object);
 		void addEmitter(Emitter* _emitter);
 
-		void	   changeMusic(std::string _file);
+		void	   changeMusic(std::string _file, bool play = false);
 		void	   pushSound(std::string _soundFile);
 		sf::Music* getMusic()   { return &mMusic; }
 		void	   pauseMusic() { mMusic.pause(); }
@@ -74,6 +74,9 @@ namespace Feanwork
 		void pause();
 		bool isPaused()					{ return mPaused;	   }
 
+		void setDebugMode(bool _mode)	{ mDebugMode = _mode; }
+		bool getDebugMode()				{ return mDebugMode;  }
+
 		sf::Vector2i getMousePosition();
 		bool		 keyPressed(string _key);
 		bool		 keyPressedOnFrame(string _key);
@@ -85,6 +88,7 @@ namespace Feanwork
 		string  mResourceDir;
 		bool	mRunning;
 		bool	mPaused;
+		bool	mDebugMode;
 
 		GAMESTATE		  mGameState;
 		Collision*		  mCollision;

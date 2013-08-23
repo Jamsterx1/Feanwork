@@ -6,8 +6,16 @@ void switchMusic(Game* _game)
 {
 	if(_game->getMusic()->getStatus() == sf::Music::Playing)
 		_game->getMusic()->pause();
-	else if(_game->getMusic()->getStatus() == sf::Music::Paused)
+	else if(_game->getMusic()->getStatus() == sf::Music::Paused || _game->getMusic()->getStatus() == sf::Music::Stopped)
 		_game->getMusic()->play();
+}
+
+void switchDebug(Game* _game)
+{
+	if(_game->getDebugMode())
+		_game->setDebugMode(false);
+	else if(!_game->getDebugMode())
+		_game->setDebugMode(true);
 }
 
 int main()
@@ -19,6 +27,7 @@ int main()
 	g->loadResources("");
 
 	g->addUICallback("switchMusic", switchMusic);
+	g->addUICallback("switchDebug", switchDebug);
 	g->loadUIContent("test.block");
 
 	std::vector<Object*> objects;
@@ -34,6 +43,6 @@ int main()
 	g->addCollisionCheck(obj3);
 
 	g->initMenu(objects);
-	//g->changeMusic("song.ogg");
+	g->changeMusic("song.ogg");
 	g->initialize();
 }

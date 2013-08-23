@@ -3,7 +3,7 @@
 namespace Feanwork
 {
 	Game::Game(string _title, string _resourceDir, int _width, int _height, WINDOWSTYLE _screen) :
-		mCamera(sf::FloatRect(0, 0, _width, _height))
+		mCamera(sf::FloatRect(0, 0, (float)_width, (float)_height))
 	{
 		srand((unsigned)time(NULL));
 
@@ -12,6 +12,7 @@ namespace Feanwork
 		mTitle		 = _title;
 		mResourceDir = _resourceDir;
 		mRunning	 = true;
+		mDebugMode   = false;
 		mDeltaTime   = 0.0f;
 
 		unsigned style;
@@ -72,7 +73,7 @@ namespace Feanwork
 	void Game::addCollisionCheck(Object* _object) { mCollisionCheck.push_back(_object);		}
 	void Game::addEmitter(Emitter* _emitter)	  { mEmitters.push_back(_emitter);			}
 
-	void Game::changeMusic(std::string _file)
+	void Game::changeMusic(std::string _file, bool play)
 	{
 		if(mMusic.Playing)
 			mMusic.stop();
@@ -81,7 +82,8 @@ namespace Feanwork
 			std::cout << "could not locate " << _file << "\n";
 
 		mMusic.setLoop(true);
-		mMusic.play();
+		if(play)
+			mMusic.play();
 	}
 
 	void Game::pushSound(std::string _soundFile)
@@ -165,9 +167,8 @@ namespace Feanwork
 					if(!mEmitters[i]->isActive())
 					{
 						mEmitters[i]->clean();
-						delete mEmitters[i];
-
 						mEmitters.erase(mEmitters.begin() + i);
+
 						emitterSize--;
 						continue;
 					}
@@ -210,19 +211,8 @@ namespace Feanwork
 		return ResourceManager::getSingleton()->getResource(_resourceID);
 	}
 
-	void Game::resume()
-	{
-		mPaused = false;
-		if(mMusic.getStatus() == sf::Music::Paused)
-			mMusic.play();
-	}
-
-	void Game::pause()
-	{
-		mPaused = true;
-		if(mMusic.getStatus() == sf::Music::Playing)
-			mMusic.pause();
-	}
+	void Game::resume() { mPaused = false; }
+	void Game::pause()  { mPaused = true;  }
 
 	sf::Vector2i Game::getMousePosition()	  { return EventManager::getSingleton()->getMousePos(this);		  }
 	bool Game::keyPressed(string _key)		  { return EventManager::getSingleton()->keyPressed(_key);		  }

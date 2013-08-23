@@ -48,9 +48,11 @@ namespace Feanwork
 	void emit(Particle& _particle, unsigned _index);
 	bool loadTexture(int _resourceID);
 
-	void		 setPosition(float _x, float _y) { mPosition.x = _x; mPosition.y = _y; }
-	sf::Vector2f getPosition()					 { return mPosition;				   }
-	bool		 isActive()						 { return mActive;					   }
+	void		 setPosition(float _x, float _y)  { mPosition.x = _x; mPosition.y = _y;    }
+	sf::Vector2f getPosition()					  { return mPosition;					   }
+	void		 setDirection(float _x, float _y) { mDirection.x = _x;	mDirection.y = _y; }
+	sf::Vector2f getDirection()					  { return mDirection;					   }
+	bool		 isActive()						  { return mActive;						   }
 
 	void		 setNumParticles(int _num);
 	void		 calculateBirthRate();

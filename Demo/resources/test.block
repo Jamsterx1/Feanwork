@@ -1,7 +1,7 @@
 #Boundaries  70,  0, 160, 80
 #Button 	 10, 10, 5, 6, 7, test		  , buttonTest
-#Switch 	 60, 10, 5, 6	, switchMusic , switch
-#Button 	110, 10, 5, 6, 7, test		  , buttonTest2
+#Switch 	 60, 10, 5, 6	, switchMusic , musicSwitch
+#Switch 	110, 10, 5, 6   , switchDebug ,	debugSwitch
 #Text 		 10, 50,  16, button		  , buttonText
-#Text	 	 60, 50,  16, Music		   	  ,  switch
-#Text 		110, 50,  16, button		  , buttonText2
+#Text	 	 60, 50,  16, Music		   	  , music text
+#Text 		110, 50,  16, Debug		      , debug text

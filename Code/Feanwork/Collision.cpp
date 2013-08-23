@@ -12,12 +12,14 @@ namespace Feanwork
 
 		sf::IntRect first  = _first->getAABB();
 		sf::IntRect second = _second->getAABB();
+		sf::Vector2i firstPos((int)_first->getX() + first.width, (int)_first->getY() + first.height);
+		sf::Vector2i secondPos((int)_second->getX() + second.width, (int)_second->getY() + second.height);
 
-		int dx  =  first.left - second.left;
-		int dy  =  first.top  - second.top;
-		int adx =  abs(first.left - second.left);
-		int ady =  abs(first.top - second.top);
-		int sw  = (first.width + second.width);
+		int dx  =  firstPos.x - secondPos.x;
+		int dy  =  firstPos.y - secondPos.y;
+		int adx =  abs(firstPos.x - secondPos.x);
+		int ady =  abs(firstPos.y - secondPos.y);
+		int sw  = (first.width  + second.width);
 		int sh  = (first.height + second.height);
 
 		if((adx < sw) && (ady < sh))

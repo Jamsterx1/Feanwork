@@ -2,10 +2,12 @@
 #include "Emitter.h"
 
 Bullet::Bullet(int _resourceID, float _xPos, float _yPos, sf::Vector2f _velocity) :
-	Feanwork::Object(_resourceID, _xPos, _yPos, true)
+	Feanwork::Object(_resourceID, _xPos, _yPos, true),
+	mEmitter(sf::Vector2f(mX, mY), sf::Vector2f(0.f, 0.f), Feanwork::EMITTERTYPE_Circle, false)
 {
 	mVelocity = _velocity;
 	mCounter = 0.0f;
+	mEmitter.parseParticleFile("resources/test.particle");
 }
 
 Bullet::~Bullet(void)
@@ -30,10 +32,9 @@ bool Bullet::render(Feanwork::Game* _game)
 
 void Bullet::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Feanwork::Game* _game)
 {
-	Feanwork::Emitter* emitter = new Feanwork::Emitter(sf::Vector2f(mX, mY), sf::Vector2f(0.f, 0.f),
-		Feanwork::EMITTERTYPE_Circle, false);
-	
-	emitter->parseParticleFile("resources/test.particle");
+	Feanwork::Emitter* emitter = &mEmitter;
+	emitter->setPosition(mX, mY);
+	emitter->setDirection(mVelocity.x, mVelocity.y);
 	_game->addEmitter(emitter);
 	destroy();
 }

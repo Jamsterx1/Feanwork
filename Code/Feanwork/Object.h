@@ -13,7 +13,7 @@ namespace Feanwork
 		Object(int _resourceID, float _xPos, float _yPos, bool _canCollide);
 		~Object(void) {}
 
-		virtual bool update(Game* _game) { return true; }
+		virtual bool update(Game* _game);
 		virtual bool render(Game* _game);
 		virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game);
 
@@ -45,6 +45,7 @@ namespace Feanwork
 		std::string mUniqueType;
 		sf::Sprite  mSprite;
 		sf::IntRect mAABB;
+		sf::RectangleShape mDebug;
 		std::vector<Object*> collisionIgnore;
 	};
 }
