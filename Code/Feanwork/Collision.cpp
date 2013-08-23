@@ -28,9 +28,11 @@ namespace Feanwork
 			normal = getNormal(sf::Vector2f(dx * invDist, dy * invDist));
 			depth  = sf::Vector2f((float)abs(adx - sw), (float)abs(ady - sh));
 
-			_first->collisionCallback(depth, normal, _game);
-			_second->collisionCallback(depth, normal, _game);
+			_first->collisionCallback(depth, normal, _second, _game);
+			_second->collisionCallback(depth, normal, _first, _game);
 
+			_first->collide();
+			_second->collide();
 			return true;
 		}
 		return false;
@@ -63,5 +65,7 @@ namespace Feanwork
 
 		if((normal.x * _vector.x + normal.y * _vector.y) > .7f)
 			return normal;
+
+		return sf::Vector2f();
 	}
 }

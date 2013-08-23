@@ -22,14 +22,6 @@ namespace Feanwork
 				_game->exit();
 				break;
 
-			case sf::Event::LostFocus:
-				_game->pause();
-				_game->getWindow()->setTitle(_game->getTitle() + " - paused");
-
-			case sf::Event::GainedFocus:
-				_game->resume();
-				_game->getWindow()->setTitle(_game->getTitle());
-
 			case sf::Event::KeyPressed:
 				for(it = mKeyMap.begin(); it != mKeyMap.end(); ++it)
 				{

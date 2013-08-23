@@ -12,7 +12,7 @@
 #include "EventManager.h"
 #include "Object.h"
 #include "Collision.h"
-#include "SoundQueue.h"
+#include "SoundManager.h"
 #include "Emitter.h"
 #include "UI/InterfaceManager.h"
 
@@ -21,7 +21,7 @@ using namespace std::chrono;
 
 namespace Feanwork
 {
-	enum    GAMESTATE   { MENU = 0, GAME		  };
+	enum    GAMESTATE   { MENU = 0, GAME, OPTIONS };
 	enum	WINDOWSTYLE { FULLSCREEN = 0, DEFAULT };
 	#define OBJECTS		vector<Object*>
 
@@ -34,14 +34,19 @@ namespace Feanwork
 		void expandResources(string _resources);
 		void loadResources(string _dir);
 		void initMenu(OBJECTS _objects);
+		void initOptions(OBJECTS _objects);
 		void initGame(OBJECTS _objects);
 		void pushObject(Object* _object);
+
+		void    setPlayer(Object* _player) { mPlayer = _player; }
+		Object* getPlayer()				   { return mPlayer;	}
 
 		void addCollisionCheck(Object* _object);
 		void addEmitter(Emitter* _emitter);
 
 		void	   changeMusic(std::string _file, bool play = false);
-		void	   pushSound(std::string _soundFile);
+		void	   addSound(std::string _name, std::string _sound);
+		void	   playSound(std::string _name);
 		sf::Music* getMusic()   { return &mMusic; }
 		void	   pauseMusic() { mMusic.pause(); }
 
@@ -93,10 +98,11 @@ namespace Feanwork
 		GAMESTATE		  mGameState;
 		Collision*		  mCollision;
 		InterfaceManager* mInterfaceManager;
-		SoundQueue*		  mSoundQueue;
+		SoundManager*	  mSoundManager;
 		sf::RenderWindow  mWindow;
 		sf::Music		  mMusic;
 		sf::View		  mCamera;
+		Object*			  mPlayer;
 
 		map<GAMESTATE, OBJECTS> mStates;
 		vector<Object*>			mCollisionCheck;

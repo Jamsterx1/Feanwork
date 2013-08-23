@@ -23,11 +23,12 @@ namespace Feanwork
 		mDebug.setOutlineThickness(2);
 		mDebug.setFillColor(sf::Color::Transparent);
 		mDebug.setPosition(_xPos, _yPos);
-		mDebug.setSize(sf::Vector2f(mAABB.width * 2, mAABB.height * 2));
+		mDebug.setSize(sf::Vector2f((float)mAABB.width * 2.f, (float)mAABB.height * 2.f));
 	}
 
 	bool Object::update(Game* _game)
 	{
+		mColliding = false;
 		return true;
 	}
 
@@ -40,7 +41,7 @@ namespace Feanwork
 		return true;
 	}
 
-	void Object::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game)
+	void Object::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game)
 	{
 	}
 
@@ -49,7 +50,7 @@ namespace Feanwork
 		mSprite.setTextureRect(sf::IntRect(_x, _y, _width, _height));
 		mAABB.width  = _width;
 		mAABB.height = _height;
-		mDebug.setSize(sf::Vector2f(_width, _height));
+		mDebug.setSize(sf::Vector2f((float)_width, (float)_height));
 	}
 
 	void Object::setRect(Frame _frame)
@@ -57,7 +58,7 @@ namespace Feanwork
 		mSprite.setTextureRect(sf::IntRect(_frame.x, _frame.y, _frame.width, _frame.height));
 		mAABB.width  = _frame.width  / 2;
 		mAABB.height = _frame.height / 2;
-		mDebug.setSize(sf::Vector2f(_frame.width, _frame.height));
+		mDebug.setSize(sf::Vector2f((float)_frame.width, (float)_frame.height));
 	}
 
 	void Object::setPosition(float _x, float _y)

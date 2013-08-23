@@ -29,7 +29,8 @@ namespace Feanwork
 		mGameState		  = MENU;
 		mCollision		  = new Collision;
 		mInterfaceManager = new InterfaceManager;
-		mSoundQueue		  = new SoundQueue;
+		mSoundManager	  = new SoundManager;
+		mPlayer			  = NULL;
 		mWindow.create(sf::VideoMode(mWidth, mHeight), mTitle, style);
 		mWindow.setFramerateLimit(60);
 
@@ -41,7 +42,7 @@ namespace Feanwork
 	{
 		delete mCollision;
 		delete mInterfaceManager;
-		delete mSoundQueue;
+		delete mSoundManager;
 
 		if(!mCollisionCheck.empty())
 			mCollisionCheck.clear();
@@ -58,6 +59,12 @@ namespace Feanwork
 	}
 
 	void Game::initMenu(OBJECTS _objects)
+	{
+		for(auto& i: _objects)
+			mStates[MENU].push_back(i);
+	}
+
+	void Game::initOptions(OBJECTS _objects)
 	{
 		for(auto& i: _objects)
 			mStates[MENU].push_back(i);
@@ -86,10 +93,16 @@ namespace Feanwork
 			mMusic.play();
 	}
 
-	void Game::pushSound(std::string _soundFile)
+	void Game::addSound(std::string _name, std::string _sound)
 	{
-		if(mSoundQueue)
-			mSoundQueue->pushSound(mResourceDir + _soundFile);
+		if(mSoundManager)
+			mSoundManager->addSound(_name, _sound);
+	}
+
+	void Game::playSound(std::string _name)
+	{
+		if(mSoundManager)
+			mSoundManager->playSound(_name);
 	}
 
 	void Game::loadUIContent(string _batch)							  
@@ -123,7 +136,7 @@ namespace Feanwork
 	void Game::update()
 	{
 		EventManager::getSingleton()->update(this);
-		mSoundQueue->update();
+		mSoundManager->update();
 		unsigned size		 = mStates[mGameState].size();
 		unsigned emitterSize = mEmitters.size();
 

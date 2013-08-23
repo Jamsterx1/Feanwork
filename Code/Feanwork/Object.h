@@ -15,7 +15,7 @@ namespace Feanwork
 
 		virtual bool update(Game* _game);
 		virtual bool render(Game* _game);
-		virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game);
+		virtual void collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game);
 
 		void setRect(int _x, int _y, int _width, int _height);
 		void setRect(Frame _frame);
@@ -33,19 +33,24 @@ namespace Feanwork
 		void		setUniqueType(std::string _type) { mUniqueType = _type; }
 		std::string getUniqueType()					 { return mUniqueType;  }
 
-		bool isDestroyed() { return mDestroy; }
-		void destroy()	   { mDestroy = true; }
+		bool isDestroyed() { return mDestroy;   }
+		void destroy()	   { mDestroy = true;   }
+
+		/* Keep off the collide call! */
+		void collide()	   { mColliding = true; }
+		bool isColliding() { return mColliding; }
 
 	protected:
 		float	    mX;
 		float	    mY;
 		bool	    mCanCollide;
 		bool		mDestroy;
-
 		std::string mUniqueType;
 		sf::Sprite  mSprite;
-		sf::IntRect mAABB;
-		sf::RectangleShape mDebug;
+
+		bool				 mColliding;
+		sf::IntRect			 mAABB;
+		sf::RectangleShape	 mDebug;
 		std::vector<Object*> collisionIgnore;
 	};
 }

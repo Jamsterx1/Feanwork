@@ -41,8 +41,12 @@ int main()
 	g->addCollisionCheck(player);
 	g->addCollisionCheck(obj2);
 	g->addCollisionCheck(obj3);
+	g->setPlayer(player);
+
+	g->changeMusic("song.ogg");
+	g->addSound("explosion", "resources/bulletExplosion.wav");
+	g->addSound("shoot", "resources/shoot.wav");
 
 	g->initMenu(objects);
-	g->changeMusic("song.ogg");
 	g->initialize();
 }

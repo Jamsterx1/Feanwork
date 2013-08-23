@@ -16,7 +16,9 @@ Player::~Player()
 bool Player::update(Feanwork::Game* _game)
 {
 	// input
+	Object::update(_game);
 	EventManager* evm = EventManager::getSingleton();
+
 	if(evm->keyPressed("a"))
 	{
 		sf::Vector2f position(-200.f * _game->getDelta(), 0.f);
@@ -61,6 +63,7 @@ bool Player::update(Feanwork::Game* _game)
 			ignore(bullet);
 			bullet->setUniqueType("bullet");
 			_game->pushObject(bullet);
+			_game->playSound("shoot");
 			mDelay = 0;
 		}
 	}
@@ -75,7 +78,7 @@ bool Player::render(Feanwork::Game* _game)
 	return true;
 }
 
-void Player::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Game* _game)
+void Player::collisionCallback(sf::Vector2f _depth, sf::Vector2f _normal, Object* _collision, Game* _game)
 {
 	addPosition(_depth.x * _normal.x, _depth.y * _normal.y);
 	_game->moveCamera(_depth.x * _normal.x, _depth.y * _normal.y);

@@ -1,0 +1,23 @@
+#ResourceID 9
+#NumParticles 4
+~#Pulse 1.0, 200.0
+
+#ColourStart 255, 255, 255, 255
+#ColourEnd 255, 255, 255, 20
+#ColourStartVariant 0, 0, 0, 0
+#ColourEndVariant 0, 0, 0, 0
+
+#SizeStart 1
+#SizeEnd 1
+#SizeStartVariant 0
+#SizeEndVariant 0
+
+#SpeedStart 100
+#SpeedEnd 100
+#SpeedStartVariant 5
+#SpeedEndVariant 5
+
+#LifeTime 500.0
+#LifeTimeVariant 0.0
+
+#PositionVariant 10, 0
