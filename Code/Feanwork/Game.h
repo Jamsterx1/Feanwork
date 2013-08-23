@@ -108,8 +108,9 @@ namespace Feanwork
 		vector<Object*>			mCollisionCheck;
 		vector<Emitter*>		mEmitters;
 
-		monotonic_clock::time_point mLastTime;
-		float						mDeltaTime;
+		sf::Clock	mClock;
+		sf::Time	mLastTime;
+		float		mDeltaTime;
 	};
 }
 

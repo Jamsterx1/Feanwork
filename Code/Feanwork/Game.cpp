@@ -14,6 +14,7 @@ namespace Feanwork
 		mRunning	 = true;
 		mDebugMode   = false;
 		mDeltaTime   = 0.0f;
+		mClock.restart();
 
 		unsigned style;
 		if(_screen == FULLSCREEN)
@@ -120,15 +121,14 @@ namespace Feanwork
 
 	void Game::initialize()
 	{
-		milliseconds ms;
 		while(mRunning)
 		{
-			mLastTime = monotonic_clock::now();
+			mDeltaTime = (mLastTime - mClock.getElapsedTime()).asSeconds();
 			update();
 			render();
 
-			ms		   = duration_cast<milliseconds>(monotonic_clock::now() - mLastTime);
-			mDeltaTime = (float)ms.count() / 1000.0f;
+			mLastTime  =  mClock.getElapsedTime();
+			mClock.restart();
 		}
 		clean();
 	}

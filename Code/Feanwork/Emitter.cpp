@@ -31,7 +31,7 @@ namespace Feanwork
  		assert(mParticles);
  		Particle* curP;
  
-		mAccum += _game->getDelta() * 2000.0f; //temp
+		mAccum += _game->getDelta() * 1000.f; //temp
  		int newParticles = (int)(mBirthRate * mAccum);
  
  		if(newParticles > 0)
@@ -56,7 +56,7 @@ namespace Feanwork
  				}
  
  				resume = true;
- 				//temp //continue;
+ 				//continue; //temp
  			}
  
 			curP->direction += mForce * _game->getDelta();
