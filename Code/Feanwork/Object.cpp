@@ -35,7 +35,7 @@ namespace Feanwork
 	bool Object::render(Game* _game)
 	{
 		_game->getWindow()->draw(mSprite);
-		if(_game->getDebugMode())
+		if(_game->getDebugMode() && mCanCollide)
 			_game->getWindow()->draw(mDebug);
 
 		return true;

@@ -24,17 +24,19 @@ namespace Feanwork
 	class Animation
 	{
 	public:
-		Animation(Object* _hook, FILE _animSet, bool _loop = true);
+		Animation(Object* _hook, FILE _animSet, float _frameSpeed = 0.5f, bool _loop = true);
 		~Animation();
 
 		bool		 update(Game* _game);
 		const Frame* nextFrame(FILE _anim, int _frame);
 		void		 changeAnim(FILE _anim);
+		void		 setFrameSpeed(float _speed) { mFrameSpeed = _speed; }
 
 	protected:
 		std::map<std::string, ANIMATION> mAnimations;
 		Object*							 mHook;
-		int								 mStepCount;
+		float							 mStepCount;
+		float							 mFrameSpeed;
 
 		std::string	mCurrentAnim;
 		int			mCurrentFrame;

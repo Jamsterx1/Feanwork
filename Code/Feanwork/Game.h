@@ -85,6 +85,7 @@ namespace Feanwork
 		sf::Vector2i getMousePosition();
 		bool		 keyPressed(string _key);
 		bool		 keyPressedOnFrame(string _key);
+		bool		 mousePressed(string _mouse);
 
 	protected:
 		int		mWidth;

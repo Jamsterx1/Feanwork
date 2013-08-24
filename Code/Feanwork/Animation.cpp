@@ -5,11 +5,12 @@
 
 namespace Feanwork
 {
-	Animation::Animation(Object* _hook, FILE _animSet, bool _loop)
+	Animation::Animation(Object* _hook, FILE _animSet, float _frameSpeed, bool _loop)
 	{
-		mHook	   = _hook;
-		mStepCount = 0;
-		mLoop	   = _loop;
+		mHook	    = _hook;
+		mStepCount  = 0.f;
+		mFrameSpeed = _frameSpeed;
+		mLoop	    = _loop;
 
 		std::string keyword = "";
 		Parser p(_animSet);
@@ -40,7 +41,7 @@ namespace Feanwork
 				std::cout << "Keyword: '" << keyword << "' is unknown\n";
 		}
 
-		mCurrentAnim  = "walk";
+		mCurrentAnim  = "idle";
 		mCurrentFrame = 0;
 		mFlipped	  = false;
 
@@ -54,19 +55,19 @@ namespace Feanwork
 
 	bool Animation::update(Game* _game)
 	{
-		if(mLoop && mStepCount >= 5)
+		if(mLoop && mStepCount >= mFrameSpeed)
 		{
 			mHook->setRect(*nextFrame(mCurrentAnim, mCurrentFrame));
-			mStepCount = 0;
+			mStepCount = 0.f;
 		}
-		else if(!mLoop && mStepCount >= 5)
+		else if(!mLoop && mStepCount >= mFrameSpeed)
 		{
-			mStepCount = 0;
+			mStepCount = 0.f;
 			if(mCurrentFrame < (int)mAnimations[mCurrentAnim].size() - 1)
 				mHook->setRect(*nextFrame(mCurrentAnim, mCurrentFrame));
 		}
 		else
-			mStepCount++;
+			mStepCount += _game->getDelta();
 
 		return true;
 	}

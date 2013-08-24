@@ -194,7 +194,7 @@ namespace Feanwork
 
 	void Game::render()
 	{
-		mWindow.clear(sf::Color::Black);
+		mWindow.clear(sf::Color(107, 107, 107, 255));
 		mWindow.setView(mCamera);
 		unsigned size = mStates[mGameState].size();
 		if(!mStates[mGameState].empty())
@@ -230,4 +230,5 @@ namespace Feanwork
 	sf::Vector2i Game::getMousePosition()	  { return EventManager::getSingleton()->getMousePos(this);		  }
 	bool Game::keyPressed(string _key)		  { return EventManager::getSingleton()->keyPressed(_key);		  }
 	bool Game::keyPressedOnFrame(string _key) { return EventManager::getSingleton()->keyPressedOnFrame(_key); }
+	bool Game::mousePressed(string _mouse)    { return EventManager::getSingleton()->mousePressed(_mouse);	  }
 }
