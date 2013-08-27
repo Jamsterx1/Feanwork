@@ -105,7 +105,8 @@ namespace Feanwork
 
 	void Emitter::clean()
 	{
-		delete[] mParticles;
+		/*if(mParticles)
+			delete[] mParticles;*/
 	}
 
 	void Emitter::emit(Particle& _particle, unsigned _index)

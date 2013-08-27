@@ -44,6 +44,7 @@ namespace Feanwork
 		mCurrentAnim  = "idle";
 		mCurrentFrame = 0;
 		mFlipped	  = false;
+		mLooped		  = false;
 
 		ANIMATION& anim = mAnimations[mCurrentAnim];
 		mHook->setRect(anim[0]);
@@ -65,6 +66,8 @@ namespace Feanwork
 			mStepCount = 0.f;
 			if(mCurrentFrame < (int)mAnimations[mCurrentAnim].size() - 1)
 				mHook->setRect(*nextFrame(mCurrentAnim, mCurrentFrame));
+			else if(!mLooped)
+				mLooped = true;
 		}
 		else
 			mStepCount += _game->getDelta();

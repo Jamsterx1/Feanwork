@@ -73,6 +73,20 @@ namespace Feanwork
 		return true;
 	}
 
+	void Button::setPosition(float _x, float _y)
+	{
+		Interface::setPosition(_x, _y);
+		for(unsigned i = 0; i < 3; i++)
+			mData.sprites[i].setPosition(_x, _y);
+	}
+
+	void Button::setPosition(sf::Vector2f _position)
+	{
+		Interface::setPosition(_position);
+		for(unsigned i = 0; i < 3; i++)
+			mData.sprites[i].setPosition(_position);
+	}
+
 	bool Button::pressed()
 	{
 		if(mInside && EventManager::getSingleton()->mousePressedOnFrame("left"))

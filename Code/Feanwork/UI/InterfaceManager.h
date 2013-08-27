@@ -27,10 +27,20 @@ namespace Feanwork
 		void render();
 		void push(Interface* _interface);
 		sf::Vector2f getPosition();
+		void setPosition(int _x, int _y);
 
 		void activate();
 		void deactivate();
 		bool insideBlock(sf::Vector2i _mouse);
+
+		bool isActive()				 { return mActive;	  }
+		void setActive(bool _active) { mActive = _active; }
+
+		bool isDead()
+			{ return mDestroy; }
+
+		void destroy()
+			{ mDestroy = true; }
 
 		bool isBlockActive()
 			{ return mActiveBlock; }
@@ -38,9 +48,13 @@ namespace Feanwork
 		std::vector<Interface*>& getInterfaces()
 			{ return mInterfaces; }
 
+		Interface* getInterface(std::string _interface);
+
 		std::vector<Interface*> mInterfaces;
 		Game*		mGame;
 		bool		mActiveBlock;
+		bool		mDestroy;
+		bool		mActive;
 		sf::IntRect mInputBoundaries;
 	};
 
@@ -50,10 +64,14 @@ namespace Feanwork
 		void initialize(Game* _game);
 		bool update();
 		void render();
+		void clean();
 
 		bool	   loadContent(UI_BATCH _batch);
 		void	   addCallback(std::string _name, UICallback _callback);
 		UICallback getCallback(std::string _callback);
+
+		Interface*	    getInterface(int _blockPos, std::string _interface);
+		INTERFACEBLOCK* getInterfaceBlock(int _blockPos);
 
 		bool isActive() { return mActive; }
 
@@ -61,7 +79,7 @@ namespace Feanwork
 		~InterfaceManager() {}
 
 	protected:
-		std::vector<INTERFACEBLOCK>		  mBlocks;
+		std::vector<INTERFACEBLOCK*>	  mBlocks;
 		std::map<std::string, UICallback> mCallbacks;
 		Game*							  mGamePtr;
 		sf::Font						  mDefaultFont;

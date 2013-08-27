@@ -1,4 +1,4 @@
-#Boundaries  70,  0, 160, 80
+#Boundaries  0,  0, 160, 80
 #Button 	 10, 10, 5, 6, 7, test		  , buttonTest
 #Switch 	 60, 10, 5, 6	, switchMusic , musicSwitch
 #Switch 	110, 10, 5, 6   , switchDebug ,	debugSwitch

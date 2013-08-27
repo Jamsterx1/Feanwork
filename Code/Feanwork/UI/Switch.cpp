@@ -92,6 +92,20 @@ namespace Feanwork
 		return false;
 	}
 
+	void Switch::setPosition(float _x, float _y)
+	{
+		Interface::setPosition(_x, _y);
+		for(unsigned i = 0; i < 2; i++)
+			mData.sprites[i].setPosition(_x, _y);
+	}
+
+	void Switch::setPosition(sf::Vector2f _position)
+	{
+		Interface::setPosition(_position);
+		for(unsigned i = 0; i < 2; i++)
+			mData.sprites[i].setPosition(_position);
+	}
+
 	void Switch::setSwitchState(SWITCHSTATE _state)
 	{
 		mSwitchState = _state;

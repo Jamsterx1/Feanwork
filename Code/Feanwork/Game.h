@@ -21,8 +21,8 @@ using namespace std::chrono;
 
 namespace Feanwork
 {
-	enum    GAMESTATE   { MENU = 0, GAME, OPTIONS };
-	enum	WINDOWSTYLE { FULLSCREEN = 0, DEFAULT };
+	enum    GAMESTATE   { MENU = 0, GAME, INSTRUCTIONS };
+	enum	WINDOWSTYLE { FULLSCREEN = 0, DEFAULT	   };
 	#define OBJECTS		vector<Object*>
 
 	class Game
@@ -34,12 +34,13 @@ namespace Feanwork
 		void expandResources(string _resources);
 		void loadResources(string _dir);
 		void initMenu(OBJECTS _objects);
-		void initOptions(OBJECTS _objects);
+		void initInstructions(OBJECTS _objects);
 		void initGame(OBJECTS _objects);
 		void pushObject(Object* _object);
 
-		void    setPlayer(Object* _player) { mPlayer = _player; }
-		Object* getPlayer()				   { return mPlayer;	}
+		void    setPlayer(Object* _player) { mPlayer = _player;		  }
+		Object* getPlayer()				   { return mPlayer;		  }
+		void	setCursor(Object* _cursor) { mCustomCursor = _cursor; }
 
 		void addCollisionCheck(Object* _object);
 		void addEmitter(Emitter* _emitter);
@@ -49,6 +50,7 @@ namespace Feanwork
 		void	   playSound(std::string _name);
 		sf::Music* getMusic()   { return &mMusic; }
 		void	   pauseMusic() { mMusic.pause(); }
+		void	   setVolume(float _volume) { mMusic.setVolume(_volume); }
 
 		void loadUIContent(string _batch);
 		void addUICallback(std::string _name, UICallback _callback);
@@ -69,11 +71,13 @@ namespace Feanwork
 		float			  getDelta()  { return mDeltaTime; }
 		sf::Texture*	  getTexture(int _resourceID);
 		bool			  isInterfaceActive() { return mInterfaceManager->isActive(); }
+		InterfaceManager* getInterface()	  { return mInterfaceManager;			  }
+		void			  flushInterface()	  { mInterfaceManager->clean();			  }
 
 		void   setTitle(string _title)	  { mTitle = _title;	  }
 		string getResourceDir()			  { return mResourceDir;  }
-		void   setState(GAMESTATE _state) { mGameState = _state;  }
 		void   exit()					  { mRunning = false;	  }
+		void   setState(GAMESTATE _state);
 
 		void resume();
 		void pause();
@@ -87,6 +91,9 @@ namespace Feanwork
 		bool		 keyPressedOnFrame(string _key);
 		bool		 mousePressed(string _mouse);
 
+		std::vector<Object*>& getObjects()
+			{ return mStates[mGameState]; }
+
 	protected:
 		int		mWidth;
 		int		mHeight;
@@ -95,8 +102,10 @@ namespace Feanwork
 		bool	mRunning;
 		bool	mPaused;
 		bool	mDebugMode;
+		bool	mSwapState;
 
 		GAMESTATE		  mGameState;
+		GAMESTATE		  mNextState;
 		Collision*		  mCollision;
 		InterfaceManager* mInterfaceManager;
 		SoundManager*	  mSoundManager;
@@ -104,6 +113,7 @@ namespace Feanwork
 		sf::Music		  mMusic;
 		sf::View		  mCamera;
 		Object*			  mPlayer;
+		Object*			  mCustomCursor;
 
 		map<GAMESTATE, OBJECTS> mStates;
 		vector<Object*>			mCollisionCheck;

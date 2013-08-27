@@ -23,6 +23,7 @@ namespace Feanwork
 
 		sf::Sound* sound = new sf::Sound;
 		sound->setBuffer(*buffer);
+		sound->setVolume(50.f);
 		mSounds[_name] = sound;
 	}
 

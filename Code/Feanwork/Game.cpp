@@ -14,6 +14,7 @@ namespace Feanwork
 		mRunning	 = true;
 		mDebugMode   = false;
 		mDeltaTime   = 0.0f;
+		mSwapState	 = false;
 		mClock.restart();
 
 		unsigned style;
@@ -32,6 +33,7 @@ namespace Feanwork
 		mInterfaceManager = new InterfaceManager;
 		mSoundManager	  = new SoundManager;
 		mPlayer			  = NULL;
+		mCustomCursor	  = NULL;
 		mWindow.create(sf::VideoMode(mWidth, mHeight), mTitle, style);
 		mWindow.setFramerateLimit(60);
 
@@ -65,14 +67,17 @@ namespace Feanwork
 			mStates[MENU].push_back(i);
 	}
 
-	void Game::initOptions(OBJECTS _objects)
+	void Game::initInstructions(OBJECTS _objects)
 	{
 		for(auto& i: _objects)
-			mStates[MENU].push_back(i);
+			mStates[INSTRUCTIONS].push_back(i);
 	}
 
 	void Game::initGame(OBJECTS _objects)
 	{
+		if(mCustomCursor)
+			mWindow.setMouseCursorVisible(false);
+
 		for(auto& i: _objects)
 			mStates[GAME].push_back(i);
 	}
@@ -137,8 +142,12 @@ namespace Feanwork
 	{
 		EventManager::getSingleton()->update(this);
 		mSoundManager->update();
-		unsigned size		 = mStates[mGameState].size();
-		unsigned emitterSize = mEmitters.size();
+		unsigned size		  = mStates[mGameState].size();
+		unsigned emitterSize  = mEmitters.size();
+		sf::Vector2i mousePos = EventManager::getSingleton()->getMousePos(this);
+
+		if(mCustomCursor)
+			mCustomCursor->setPosition((float)mousePos.x, (float)mousePos.y);
 
 		if(!mPaused)
 		{
@@ -153,23 +162,33 @@ namespace Feanwork
 
 				Object* current = mStates[mGameState][i];
 				current->update(this);
+				int collisionSize = mCollisionCheck.size();
 
 				if(mCollision)
 				{
-					for(auto& i: mCollisionCheck)
-						if(current->canCollide() && current != i)
+					for(int i = 0; i < collisionSize; i++)
+					{
+						if(mCollisionCheck[i]->isDestroyed())
+						{
+							mCollisionCheck.erase(mCollisionCheck.begin() + i);
+							collisionSize--;
+							continue;
+						}
+
+						if(current->canCollide() && current != mCollisionCheck[i])
 						{
 							bool skip = false;
-							if(!i->getIgnores().empty())
+							if(!mCollisionCheck[i]->getIgnores().empty())
 							{
-								for(auto& i: i->getIgnores())
+								for(auto& i: mCollisionCheck[i]->getIgnores())
 									if(i == current)
 										skip = true;
 							}
 
 							if(!skip)
-								mCollision->checkCollides(i, current, this);
+								mCollision->checkCollides(mCollisionCheck[i], current, this);
 						}
+					}
 				}
 			}
 
@@ -190,6 +209,9 @@ namespace Feanwork
 			}
 		}
 		mInterfaceManager->update();
+		
+		if(mSwapState)
+			mGameState = mNextState;
 	}
 
 	void Game::render()
@@ -205,6 +227,9 @@ namespace Feanwork
 			for(auto& i: mEmitters)
 				i->render(this);
 
+		if(mCustomCursor)
+			mCustomCursor->render(this);
+
 		mWindow.setView(mWindow.getDefaultView());
 		mInterfaceManager->render();
 		mWindow.display();
@@ -212,9 +237,6 @@ namespace Feanwork
 
 	void Game::clean()
 	{
-		if(!mStates[MENU].empty())
-			mStates[MENU].clear();
-
 		if(!mStates[GAME].empty())
 			mStates[GAME].clear();
 	}
@@ -222,6 +244,12 @@ namespace Feanwork
 	sf::Texture* Game::getTexture(int _resourceID)
 	{
 		return ResourceManager::getSingleton()->getResource(_resourceID);
+	}
+
+	void Game::setState(GAMESTATE _state)
+	{
+		mNextState = _state;
+		mSwapState = true;
 	}
 
 	void Game::resume() { mPaused = false; }

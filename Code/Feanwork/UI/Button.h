@@ -39,6 +39,9 @@ namespace Feanwork
 		virtual bool update(Game* _game);
 		virtual bool draw(Game* _game);
 
+		void setPosition(float _x, float _y);
+		void setPosition(sf::Vector2f _position);
+
 		bool pressed();
 		void setClickState(CLICKSTATE _state);
 		void callEvent(Game* _game);

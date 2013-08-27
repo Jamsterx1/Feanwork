@@ -15,8 +15,8 @@ namespace Feanwork
 		virtual bool update(Game*_game);
 		virtual bool draw(Game* _game) { return true; }
 
-		void setPosition(float _x, float _y);
-		void setPosition(sf::Vector2f _position);
+		virtual void setPosition(float _x, float _y);
+		virtual void setPosition(sf::Vector2f _position);
 
 		sf::Vector2f getPositon()
 			{ return mPosition; }

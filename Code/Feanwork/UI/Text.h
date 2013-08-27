@@ -17,6 +17,9 @@ namespace Feanwork
 		virtual bool update(Game* _game);
 		virtual bool draw(Game* _game);
 
+		void setPosition(float _x, float _y);
+		void setPosition(sf::Vector2f _position);
+
 		std::string getString();
 		void setString(std::string _text);
 

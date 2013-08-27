@@ -32,6 +32,12 @@ namespace Feanwork
 		void		 changeAnim(FILE _anim);
 		void		 setFrameSpeed(float _speed) { mFrameSpeed = _speed; }
 
+		void resetLooped()
+			{ mLooped = false; }
+
+		bool hasLooped()
+			{ return mLooped; }
+
 	protected:
 		std::map<std::string, ANIMATION> mAnimations;
 		Object*							 mHook;
@@ -42,6 +48,7 @@ namespace Feanwork
 		int			mCurrentFrame;
 		bool		mFlipped;
 		bool		mLoop;
+		bool		mLooped;
 	};
 }
 

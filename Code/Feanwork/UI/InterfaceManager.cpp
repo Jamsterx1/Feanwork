@@ -13,6 +13,8 @@ namespace Feanwork
 		mInputBoundaries.top  = 0;
 		mInputBoundaries.width  = 200;
 		mInputBoundaries.height = 200;
+		mDestroy = false;
+		mActive  = true;
 	}
 
 	INTERFACEBLOCK::INTERFACEBLOCK(int _boundaries[4], Game* _state)
@@ -22,35 +24,54 @@ namespace Feanwork
 		mInputBoundaries.top  = _boundaries[1];
 		mInputBoundaries.width  = _boundaries[2];
 		mInputBoundaries.height = _boundaries[3];
+		mDestroy = false;
+		mActive  = true;
 	}
 
 	bool INTERFACEBLOCK::update()
 	{
-		if(!mInterfaces.empty())
-			for(auto& i: mInterfaces)
-				i->update(mGame);
-
+		if(mActive)
+		{
+			if(!mInterfaces.empty())
+				for(unsigned i = 0; i < mInterfaces.size(); i++)
+					mInterfaces[i]->update(mGame);
+		}
 		return true;
 	}
 
 	void INTERFACEBLOCK::render()
 	{
-		if(!mInterfaces.empty())
-			for(auto& i: mInterfaces)
-				i->draw(mGame);
+		if(mActive)
+		{
+			if(!mInterfaces.empty())
+				for(auto& i: mInterfaces)
+					i->draw(mGame);
 
-		sf::RectangleShape shape;
-		shape.setPosition((float)mInputBoundaries.left + 1, (float)mInputBoundaries.top + 1);
-		shape.setSize(sf::Vector2f((float)mInputBoundaries.width, (float)mInputBoundaries.height));
-		shape.setOutlineThickness(2);
-		shape.setOutlineColor(sf::Color::Blue);
-		shape.setFillColor(sf::Color::Transparent);
-		mGame->getWindow()->draw(shape);
+			if(mGame->getDebugMode())
+			{
+				sf::RectangleShape shape;
+				shape.setPosition((float)mInputBoundaries.left + 1, (float)mInputBoundaries.top + 1);
+				shape.setSize(sf::Vector2f((float)mInputBoundaries.width, (float)mInputBoundaries.height));
+				shape.setOutlineThickness(2);
+				shape.setOutlineColor(sf::Color::Blue);
+				shape.setFillColor(sf::Color::Transparent);
+				mGame->getWindow()->draw(shape);
+			}
+		}
 	}
 
 	void INTERFACEBLOCK::push(Interface* _interface)
 	{
 		mInterfaces.push_back(_interface);
+	}
+
+	void INTERFACEBLOCK::setPosition(int _x, int _y)
+	{
+		mInputBoundaries.left = _x;
+		mInputBoundaries.top  = _y;
+
+		for(auto& i: mInterfaces)
+			i->setPosition(sf::Vector2f(_x + i->getPositon().x, _y + i->getPositon().y));
 	}
 
 	sf::Vector2f INTERFACEBLOCK::getPosition()
@@ -88,11 +109,20 @@ namespace Feanwork
 		return false;
 	}
 
+	Interface* INTERFACEBLOCK::getInterface(std::string _interface)
+	{
+		for(auto& i: mInterfaces)
+			if(i->getUniqueName() == _interface)
+				return i;
+
+		return nullptr;
+	}
+
 	// INTERFACE MANAGER
 	void InterfaceManager::initialize(Game* _game)
 	{
 		mGamePtr = _game;
-		mDefaultFont.loadFromFile(_game->getResourceDir() + "arial.ttf");
+		mDefaultFont.loadFromFile(_game->getResourceDir() + "Fixedsys.ttf");
 		mActive = false;
 	}
 
@@ -103,23 +133,34 @@ namespace Feanwork
 		if(!mBlocks.empty())
 			for(auto& i: mBlocks)
 			{
-				if(i.insideBlock(mouse))
+				if(i->insideBlock(mouse))
 				{
-					if(!i.isBlockActive())
-						i.activate();
+					if(!i->isBlockActive())
+						i->activate();
 
 					mActive = true;
 				}
 				else
 				{
-					if(i.isBlockActive())
-						i.deactivate();
+					if(i->isBlockActive())
+						i->deactivate();
 				}
 			}
 
 		if(!mBlocks.empty())
-			for(auto& i: mBlocks)
-				i.update();
+		{
+			unsigned blockSize = mBlocks.size();
+			for(unsigned i = 0; i < blockSize; i++)
+			{
+				if(mBlocks[i]->isDead())
+				{
+					mBlocks.erase(mBlocks.begin() + i);
+					blockSize--;
+					continue;
+				}
+				mBlocks[i]->update();
+			}
+		}
 
 		return true;
 	}
@@ -128,7 +169,19 @@ namespace Feanwork
 	{
 		if(!mBlocks.empty())
 			for(auto& i: mBlocks)
-				i.render();
+				i->render();
+	}
+
+	void InterfaceManager::clean()
+	{
+		for(unsigned i = 0; i < mBlocks.size(); i++)
+			for(auto& p: mBlocks[i]->getInterfaces())
+				delete p;
+
+		for(unsigned b = 0; b < mBlocks.size(); b++)
+			mBlocks.erase(mBlocks.begin() + b);
+
+		mBlocks.clear();
 	}
 
 	bool InterfaceManager::loadContent(UI_BATCH _batch)
@@ -181,9 +234,9 @@ namespace Feanwork
 					cout << "Incorrect number of parameters passed to text" << endl;
 
 				sf::Vector2f position;
-				position.x = p.getFloat(0);
-				position.y = p.getFloat(1);
-				int size   = p.getInt(2);
+				position.x     = p.getFloat(0);
+				position.y     = p.getFloat(1);
+				int size	   = p.getInt(2);
 
 				Text* newText = new Text(newBlock, position, p.getString(4));
 				newText->initialize(&mDefaultFont, p.getString(3), size);
@@ -191,7 +244,7 @@ namespace Feanwork
 			}
 		}
 
-		mBlocks.push_back(*newBlock);
+		mBlocks.push_back(newBlock);
 		return true;
 	}
 
@@ -208,5 +261,15 @@ namespace Feanwork
 				return it->second;
 
 		return nullptr;
+	}
+
+	Interface* InterfaceManager::getInterface(int _blockPos, std::string _interface)
+	{
+		return mBlocks[_blockPos]->getInterface(_interface);
+	}
+
+	INTERFACEBLOCK* InterfaceManager::getInterfaceBlock(int _blockPos)
+	{
+		return mBlocks[_blockPos];
 	}
 }

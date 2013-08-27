@@ -41,6 +41,19 @@ namespace Feanwork
 		return true;
 	}
 
+	void Text::setPosition(float _x, float _y)
+	{
+		mPosition.x = _x;
+		mPosition.y = _y;
+		mText.setPosition(_x, _y);
+	}
+
+	void Text::setPosition(sf::Vector2f _position)
+	{
+		mPosition = _position;
+		mText.setPosition(_position);
+	}
+
 	std::string Text::getString()
 	{
 		return mText.getString();
